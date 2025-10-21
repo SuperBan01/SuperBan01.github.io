@@ -21,6 +21,9 @@
     </div>
     <!-- 顶部标题区 -->
     <header class="header">
+        <div class="avatar-container">
+            <img src="avatar.jpg" alt="个人头像" class="avatar">
+        </div>
         <h1 class="name" data-lang="zh">刘骁奔</h1>
         <h1 class="name" data-lang="en">Liuxiaoben</h1>
         <p class="birth">2000.10.14</p>
@@ -32,9 +35,17 @@
     <!-- 轮播图区域 -->
     <section class="carousel-section">
         <div class="carousel-container">
-            <div class="carousel-placeholder">
-                <!-- 轮播图片将在这里显示 -->
-                <div class="carousel-text">图片轮播区</div>
+            <div class="carousel">
+                <div class="carousel-slides">
+                    <div class="carousel-slide active"><img src="img/WechatIMG262.jpg" alt="轮播图1"></div>
+                    <div class="carousel-slide"><img src="img/doramon.jpg" alt="轮播图2"></div>
+                    <div class="carousel-slide"><img src="img/dreamfly.jpg" alt="轮播图3"></div>
+                    <div class="carousel-slide"><img src="img/susie2001@mails.ccnu.edu.cn.png" alt="轮播图4"></div>
+                    <div class="carousel-slide"><img src="img/v2-3a447aede7e13dc549f7a39d7014cf7d_1440w.webp" alt="轮播图5"></div>
+                </div>
+                <button class="carousel-prev" aria-label="上一张">‹</button>
+                <button class="carousel-next" aria-label="下一张">›</button>
+                <div class="carousel-indicators"></div>
             </div>
         </div>
     </section>

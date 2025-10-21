@@ -116,6 +116,92 @@ function setupGitHubPagesCompatibility() {
     }
 }
 
+// 轮播图功能
+function initCarousel() {
+    const carousel = document.querySelector('.carousel');
+    if (!carousel) return;
+    
+    const slides = document.querySelectorAll('.carousel-slide');
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    const indicatorsContainer = document.querySelector('.carousel-indicators');
+    
+    let currentIndex = 0;
+    let slideInterval;
+    
+    // 创建指示器
+    slides.forEach((_, index) => {
+        const indicator = document.createElement('button');
+        indicator.classList.add('carousel-indicator');
+        if (index === 0) {
+            indicator.classList.add('active');
+        }
+        indicator.addEventListener('click', () => goToSlide(index));
+        indicatorsContainer.appendChild(indicator);
+    });
+    
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    
+    // 切换到指定幻灯片
+    function goToSlide(index) {
+        slides[currentIndex].classList.remove('active');
+        indicators[currentIndex].classList.remove('active');
+        
+        currentIndex = index;
+        
+        slides[currentIndex].classList.add('active');
+        indicators[currentIndex].classList.add('active');
+        
+        // 重置自动播放
+        resetAutoPlay();
+    }
+    
+    // 下一张
+    function nextSlide() {
+        let nextIndex = currentIndex + 1;
+        if (nextIndex >= slides.length) {
+            nextIndex = 0;
+        }
+        goToSlide(nextIndex);
+    }
+    
+    // 上一张
+    function prevSlide() {
+        let prevIndex = currentIndex - 1;
+        if (prevIndex < 0) {
+            prevIndex = slides.length - 1;
+        }
+        goToSlide(prevIndex);
+    }
+    
+    // 自动播放
+    function startAutoPlay() {
+        slideInterval = setInterval(nextSlide, 5000); // 5秒切换一次
+    }
+    
+    // 重置自动播放
+    function resetAutoPlay() {
+        clearInterval(slideInterval);
+        startAutoPlay();
+    }
+    
+    // 暂停自动播放
+    function pauseAutoPlay() {
+        clearInterval(slideInterval);
+    }
+    
+    // 事件监听
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    
+    // 鼠标悬停时暂停自动播放
+    carousel.addEventListener('mouseenter', pauseAutoPlay);
+    carousel.addEventListener('mouseleave', startAutoPlay);
+    
+    // 初始化自动播放
+    startAutoPlay();
+}
+
 // 页面加载完成后初始化所有功能
 window.addEventListener('DOMContentLoaded', () => {
     // 初始化生命计时器
@@ -136,4 +222,7 @@ window.addEventListener('DOMContentLoaded', () => {
     
     // 设置GitHub Pages兼容性
     setupGitHubPagesCompatibility();
+    
+    // 初始化轮播图
+    initCarousel();
 });
