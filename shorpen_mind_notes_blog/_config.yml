@@ -1,0 +1,24 @@
+
+title: "Shorpen’s Mind Notes"
+description: "记录思想、灵感与梦蝶心智"
+baseurl: ""
+url: "https://shorpen.github.io"
+
+theme: jekyll-theme-chirpy
+
+author:
+  name: "Shorpen"
+  email: "your_email@example.com"
+
+style:
+  background: "#f8f8f2"
+  text-color: "#222"
+  accent-color: "#a67c52"
+
+paginate: 5
+paginate_path: "/page:num/"
+
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-seo-tag
