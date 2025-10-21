@@ -1,0 +1,716 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+/* 背景炫光元素样式 */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.glow-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background: linear-gradient(45deg, transparent, transparent);
+    box-shadow: 0 0 50px rgba(156, 39, 176, 0.3), 
+                inset 0 0 50px rgba(156, 39, 176, 0.2);
+    animation: glowPulse 20s infinite ease-in-out;
+}
+
+.glow-ring-1 {
+    width: 60vw;
+    height: 60vw;
+    top: -30vw;
+    right: -30vw;
+    opacity: 0.4;
+    animation-delay: 0s;
+}
+
+.glow-ring-2 {
+    width: 40vw;
+    height: 40vw;
+    bottom: -20vw;
+    left: -20vw;
+    opacity: 0.3;
+    box-shadow: 0 0 50px rgba(33, 150, 243, 0.3), 
+                inset 0 0 50px rgba(33, 150, 243, 0.2);
+    animation-delay: -5s;
+}
+
+.glow-ring-3 {
+    width: 30vw;
+    height: 30vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.2;
+    box-shadow: 0 0 50px rgba(76, 175, 80, 0.3), 
+                inset 0 0 50px rgba(76, 175, 80, 0.2);
+    animation-delay: -10s;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.2;
+    }
+    50% {
+        transform: scale(1.1) rotate(180deg);
+        opacity: 0.4;
+    }
+}
+
+/* 语言切换按钮 */
+.language-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.lang-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.lang-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.lang-btn.active {
+    background-color: rgba(156, 39, 176, 0.7);
+    color: #ffffff;
+    border-color: rgba(156, 39, 176, 0.9);
+}
+
+/* 语言切换相关样式 */
+[data-lang="en"] {
+    display: none;
+}
+
+body.en [data-lang="zh"] {
+    display: none;
+}
+
+body.en [data-lang="en"] {
+    display: block;
+}
+
+body.zh [data-lang="zh"] {
+    display: block;
+}
+
+body.zh [data-lang="en"] {
+    display: none;
+}
+
+/* 头部样式 */
+.header {
+    text-align: center;
+    padding: 80px 20px 50px;
+    background-color: #0a0a0a;
+    position: relative;
+}
+
+.name {
+    font-size: 3.5rem;
+    font-weight: 200;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.birth {
+    font-size: 1.2rem;
+    color: #888;
+    margin-bottom: 15px;
+    font-weight: 200;
+}
+
+.life-counter {
+    font-size: 1.5rem;
+    color: #64b5f6;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+#day-count {
+    font-weight: 600;
+    color: #4fc3f7;
+    font-family: 'Courier New', monospace;
+}
+
+.motto {
+    font-size: 1.3rem;
+    color: #aaa;
+    font-style: italic;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 15px 0;
+}
+
+/* 轮播图区域 */
+.carousel-section {
+    width: 100%;
+    margin: 40px 0;
+    padding: 0 20px;
+}
+
+.carousel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.carousel-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #121212;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.carousel-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(79, 195, 247, 0.05) 0%, rgba(255, 138, 101, 0.05) 100%);
+}
+
+.carousel-text {
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* 双纲领结构 */
+.dualism {
+    text-align: center;
+    padding: 40px 20px;
+    margin: 60px 0;
+}
+
+.dualism-line {
+    font-size: 2.8rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.dualism-tech {
+    color: #4fc3f7;
+}
+
+.dualism-symbol {
+    color: #ffffff;
+    margin: 0 30px;
+    font-weight: 300;
+}
+
+.dualism-human {
+    color: #ff8a65;
+}
+
+/* 主内容区 */
+.main-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 维度通用样式 */
+.dimension {
+    margin-bottom: 120px;
+    position: relative;
+}
+
+.dimension-header {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.dimension-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 10px;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+
+.dimension-subtitle {
+    font-size: 1.1rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 300;
+}
+
+/* 中间颜色标识 */
+.tech-dimension .dimension-header::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background-color: #4fc3f7;
+    margin: 20px auto 0;
+}
+
+.human-dimension .dimension-header::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background-color: #ff8a65;
+    margin: 20px auto 0;
+}
+
+.dimension-keywords {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    color: #bbb;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.dimension-bio {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #ddd;
+    max-width: 800px;
+    margin: 0 auto 50px;
+    text-align: center;
+    padding: 0 20px;
+}
+
+/* 项目网格 */
+.projects {
+    margin: 60px 0;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.project-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 30px 20px;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+    background-color: rgba(79, 195, 247, 0.1);
+}
+
+.project-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #4fc3f7;
+}
+
+.project-desc {
+    font-size: 0.95rem;
+    color: #999;
+    line-height: 1.5;
+}
+
+/* 创作内容区域 */
+.creative-section {
+    margin-bottom: 50px;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #ff8a65;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.work-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 4px;
+    text-align: center;
+    color: #ddd;
+    transition: all 0.3s ease;
+}
+
+.work-item:hover {
+    transform: translateY(-3px);
+    background-color: rgba(255, 138, 101, 0.1);
+}
+
+/* 时间线样式 */
+.timeline {
+    margin-bottom: 120px;
+    position: relative;
+    padding: 0 20px;
+}
+
+.timeline-title {
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin-bottom: 60px;
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+}
+
+.timeline-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background-color: #ffffff;
+    margin: 20px auto 0;
+}
+
+.timeline-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.timeline-items {
+    position: relative;
+}
+
+/* 时间线中间线 */
+.timeline-items::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.timeline-item {
+    margin-bottom: 60px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 交替排列 */
+.timeline-item:nth-child(odd) .timeline-year {
+    order: 1;
+    text-align: right;
+}
+
+.timeline-item:nth-child(odd) .timeline-event {
+    order: 2;
+    text-align: left;
+}
+
+.timeline-item:nth-child(even) .timeline-year {
+    order: 2;
+    text-align: left;
+}
+
+.timeline-item:nth-child(even) .timeline-event {
+    order: 1;
+    text-align: right;
+}
+
+.timeline-year {
+    width: 45%;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #4fc3f7;
+    font-family: 'Courier New', monospace;
+}
+
+.timeline-item:nth-child(even) .timeline-year {
+    color: #ff8a65;
+}
+
+.timeline-event {
+    width: 45%;
+    color: #ddd;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+/* 时间线中心点 */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.timeline-item:nth-child(odd)::before {
+    background-color: #4fc3f7;
+}
+
+.timeline-item:nth-child(even)::before {
+    background-color: #ff8a65;
+}
+
+/* 哲学格言样式 */
+.philosophy {
+    margin-bottom: 120px;
+    padding: 0 20px;
+}
+
+.philosophy-title {
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin-bottom: 60px;
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+}
+
+.philosophy-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background-color: #ffffff;
+    margin: 20px auto 0;
+}
+
+.philosophy-quotes {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.quote {
+    display: block;
+    margin-bottom: 50px;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #bbb;
+    line-height: 1.8;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.quote:last-child {
+    margin-bottom: 0;
+}
+
+/* 页脚样式 */
+.footer {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #0a0a0a;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-text {
+    font-size: 1rem;
+    color: #666;
+    font-weight: 200;
+}
+
+/* 响应式设计 */
+@media (max-width: 900px) {
+    .name {
+        font-size: 3rem;
+    }
+    
+    .dualism-line {
+        font-size: 2.2rem;
+    }
+    
+    .dualism-symbol {
+        margin: 0 20px;
+    }
+    
+    .dimension-title {
+        font-size: 2.2rem;
+    }
+    
+    .timeline-title,
+    .philosophy-title {
+        font-size: 2rem;
+    }
+    
+    .quote {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 60px 20px 40px;
+    }
+    
+    .name {
+        font-size: 2.5rem;
+    }
+    
+    .carousel-container {
+        height: 300px;
+    }
+    
+    .dualism-line {
+        font-size: 1.8rem;
+    }
+    
+    .dimension {
+        margin-bottom: 80px;
+    }
+    
+    .dimension-title {
+        font-size: 2rem;
+    }
+    
+    .dimension-bio {
+        font-size: 1.1rem;
+    }
+    
+    .timeline {
+        margin-bottom: 80px;
+    }
+    
+    .philosophy {
+        margin-bottom: 80px;
+    }
+    
+    /* 移动设备上时间线调整 */
+    .timeline-items::before {
+        left: 20px;
+    }
+    
+    .timeline-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 60px;
+    }
+    
+    .timeline-item::before {
+        left: 20px;
+        top: 10px;
+    }
+    
+    .timeline-year,
+    .timeline-event {
+        width: 100%;
+        text-align: left !important;
+        order: 0 !important;
+    }
+    
+    .timeline-year {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+    
+    .timeline-event {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .name {
+        font-size: 2rem;
+    }
+    
+    .birth,
+    .life-counter {
+        font-size: 1rem;
+    }
+    
+    .motto {
+        font-size: 1.1rem;
+    }
+    
+    .carousel-container {
+        height: 200px;
+    }
+    
+    .dualism-line {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
+    
+    .dualism-symbol {
+        margin: 0 10px;
+    }
+    
+    .dimension-title {
+        font-size: 1.8rem;
+    }
+    
+    .dimension-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .project-item {
+        padding: 20px 15px;
+    }
+    
+    .quote {
+        font-size: 1.2rem;
+    }
+}
