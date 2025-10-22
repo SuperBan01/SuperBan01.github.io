@@ -20,16 +20,7 @@
         <button id="btn-en" class="lang-btn">English</button>
     </div>
     
-    <!-- 导航栏 -->
-    <nav class="navbar">
-        <ul class="nav-links">
-            <li><a href="index.html" data-lang="zh">首页</a><a href="index.html" data-lang="en">Home</a></li>
-            <li><a href="index.html#tech-dimension" data-lang="zh">技术之维</a><a href="index.html#tech-dimension" data-lang="en">Technical</a></li>
-            <li><a href="index.html#human-dimension" data-lang="zh">人文之维</a><a href="index.html#human-dimension" data-lang="en">Humanistic</a></li>
-            <li><a href="index.html#timeline" data-lang="zh">时间线</a><a href="index.html#timeline" data-lang="en">Timeline</a></li>
-            <li><a href="blog.html" class="active" data-lang="zh">文章</a><a href="blog.html" class="active" data-lang="en">Articles</a></li>
-        </ul>
-    </nav>
+    <!-- 移除导航栏 -->
     
     <!-- 博客标题区 -->
     <header class="blog-header">
@@ -43,54 +34,14 @@
     <main class="blog-main">
         <!-- 文章列表区域 -->
         <section class="blog-articles">
-            <div class="articles-grid">
-                <!-- 文章项1 -->
-                <article class="blog-article-item" data-article-id="1">
-                    <h2 class="article-title"><a href="#article-1">12.14雪夜</a></h2>
-                    <div class="article-meta">
-                        <span class="article-date" data-lang="zh">发布于 2024年12月14日</span>
-                        <span class="article-date" data-lang="en">Published on December 14, 2024</span>
-                        <span class="article-category"><a href="#category-reflection" data-lang="zh">思考</a><a href="#category-reflection" data-lang="en">Reflection</a></span>
-                    </div>
-                    <div class="article-excerpt" data-lang="zh">
-                        一场雪夜的思考与感悟，关于生命、时间与存在的意义...
-                    </div>
-                    <div class="article-excerpt" data-lang="en">
-                        Thoughts and insights on a snowy night, about life, time and the meaning of existence...
-                    </div>
-                    <div class="article-actions">
-                        <a href="#article-1" class="read-more" data-lang="zh">阅读全文</a>
-                        <a href="#article-1" class="read-more" data-lang="en">Read More</a>
-                        <span class="comment-count">
-                            <span class="comment-icon">💬</span>
-                            <span class="comment-number" data-count="0">0</span>
-                        </span>
-                    </div>
-                </article>
-
-                <!-- 文章项2 -->
-                <article class="blog-article-item" data-article-id="2">
-                    <h2 class="article-title"><a href="#article-2">mindcopy标准介绍及其示例</a></h2>
-                    <div class="article-meta">
-                        <span class="article-date" data-lang="zh">发布于 2024年10月15日</span>
-                        <span class="article-date" data-lang="en">Published on October 15, 2024</span>
-                        <span class="article-category"><a href="#category-tech" data-lang="zh">技术</a><a href="#category-tech" data-lang="en">Technology</a></span>
-                    </div>
-                    <div class="article-excerpt" data-lang="zh">
-                        关于意识复制技术的标准与实践，详细介绍mindcopy技术原理与应用场景...
-                    </div>
-                    <div class="article-excerpt" data-lang="en">
-                        Standards and practices for consciousness copying technology, detailed introduction to mindcopy principles and application scenarios...
-                    </div>
-                    <div class="article-actions">
-                        <a href="#article-2" class="read-more" data-lang="zh">阅读全文</a>
-                        <a href="#article-2" class="read-more" data-lang="en">Read More</a>
-                        <span class="comment-count">
-                            <span class="comment-icon">💬</span>
-                            <span class="comment-number" data-count="0">0</span>
-                        </span>
-                    </div>
-                </article>
+            <div class="articles-grid" id="articles-container">
+                <!-- 文章将通过JavaScript动态加载 -->
+                <div class="loading-message">
+                    <p data-lang="zh">正在加载文章...</p>
+                    <p data-lang="en">Loading articles...</p>
+                </div>
+            </div>
+        </section>
 
                 <!-- 文章项3 -->
                 <article class="blog-article-item" data-article-id="3">
@@ -143,28 +94,22 @@
         </section>
 
         <!-- 文章详情区域 -->
-        <section class="article-details">
-            <!-- 文章1详情 -->
-            <article id="article-1" class="full-article">
+        <section class="article-details" id="article-details-container">
+            <div class="full-article">
                 <div class="article-header">
-                    <h1 class="full-article-title">12.14雪夜</h1>
-                    <div class="full-article-meta">
-                        <span class="article-date" data-lang="zh">发布于 2024年12月14日</span>
-                        <span class="article-date" data-lang="en">Published on December 14, 2024</span>
-                        <span class="article-category"><a href="#category-reflection" data-lang="zh">思考</a><a href="#category-reflection" data-lang="en">Reflection</a></span>
-                    </div>
+                    <h1 class="full-article-title"></h1>
+                    <div class="full-article-meta"></div>
                 </div>
-                <div class="article-content">
-                    <p>雪，纷纷扬扬地落着。</p>
-                    <p>窗外的世界一片银白，仿佛时间都慢了下来。我站在窗前，看着雪花一片片飘落，落在房檐上，落在树枝上，落在地面上，转眼间就覆盖了整个世界。</p>
-                    <p>这样的夜晚总是让人思绪万千。雪，似乎有一种魔力，能够洗净喧嚣，让一切都回归宁静。在这样的夜晚，我总是会想起很多过去的事情，那些欢乐的、悲伤的、遗憾的、美好的回忆，就像电影画面一样在脑海中闪过。</p>
-                    <p>生命就像这场雪，美丽却短暂。每一片雪花都是独一无二的，但最终都会融化，回归大地。我们的生命也是如此，每个人都是独一无二的，但最终都会走向终点。然而，正是因为这种短暂，才让生命显得更加珍贵。</p>
-                    <p>在这个雪夜里，我突然明白了，生命的意义或许就在于体验每一个当下，珍惜每一次相遇，感恩每一份拥有。无论快乐还是痛苦，都是生命赐予我们的礼物，都值得我们用心去感受。</p>
-                    <p>雪还在下着，我的思绪也在继续飘远。但有一点我很确定：明天，当太阳升起，雪会融化，但那些美好的回忆，那些深刻的感悟，将会永远留在我的心中，成为我生命中最珍贵的财富。</p>
-                </div>
+                <div class="full-article-content"></div>
                 <div class="article-footer">
-                    <a href="aricle/12.14雪夜.docx" download class="download-original" data-lang="zh">下载原文</a>
-                    <a href="aricle/12.14雪夜.docx" download class="download-original" data-lang="en">Download Original</a>
+                    <button class="back-to-list-btn">
+                        <span data-lang="zh">返回列表</span>
+                        <span data-lang="en">Back to List</span>
+                    </button>
+                    <a href="#" class="article-download-link download-original">
+                        <span data-lang="zh">下载原文</span>
+                        <span data-lang="en">Download Original</span>
+                    </a>
                 </div>
                 
                 <!-- 留言区域 -->
@@ -173,17 +118,17 @@
                     <h3 class="comments-title" data-lang="en">Comments</h3>
                     
                     <!-- 留言表单 -->
-                    <form class="comment-form" data-article-id="1">
+                    <form class="comment-form">
                         <div class="form-group">
-                            <label for="comment-name-1" data-lang="zh">您的昵称：</label>
-                            <label for="comment-name-1" data-lang="en">Your Name：</label>
-                            <input type="text" id="comment-name-1" name="comment-name" required>
+                            <label for="comment-name" data-lang="zh">您的昵称：</label>
+                            <label for="comment-name" data-lang="en">Your Name：</label>
+                            <input type="text" id="comment-name" name="comment-name" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="comment-content-1" data-lang="zh">留言内容：</label>
-                            <label for="comment-content-1" data-lang="en">Comment Content：</label>
-                            <textarea id="comment-content-1" name="comment-content" rows="4" required></textarea>
+                            <label for="comment-content" data-lang="zh">留言内容：</label>
+                            <label for="comment-content" data-lang="en">Comment Content：</label>
+                            <textarea id="comment-content" name="comment-content" rows="4" required></textarea>
                         </div>
                         
                         <button type="submit" class="submit-comment">
@@ -193,249 +138,12 @@
                     </form>
                     
                     <!-- 留言列表 -->
-                    <div class="comments-list" data-article-id="1">
+                    <div class="comments-list">
                         <p class="no-comments" data-lang="zh">暂无留言，来发表第一条留言吧！</p>
                         <p class="no-comments" data-lang="en">No comments yet, be the first to comment!</p>
                     </div>
                 </div>
-            </article>
-
-            <!-- 文章2详情 -->
-            <article id="article-2" class="full-article">
-                <div class="article-header">
-                    <h1 class="full-article-title">mindcopy标准介绍及其示例</h1>
-                    <div class="full-article-meta">
-                        <span class="article-date" data-lang="zh">发布于 2024年10月15日</span>
-                        <span class="article-date" data-lang="en">Published on October 15, 2024</span>
-                        <span class="article-category"><a href="#category-tech" data-lang="zh">技术</a><a href="#category-tech" data-lang="en">Technology</a></span>
-                    </div>
-                </div>
-                <div class="article-content">
-                    <h2>1. 引言</h2>
-                    <p>随着人工智能技术的飞速发展，人类对于意识复制的探索也日益深入。本文将详细介绍mindcopy标准的基本概念、技术原理、应用场景以及实现示例。</p>
-                    
-                    <h2>2. mindcopy标准概述</h2>
-                    <p>mindcopy是一套用于意识信息数字化存储与传输的开放标准，旨在实现人类意识在数字世界中的延展与再生。该标准包括以下核心组件：</p>
-                    
-                    <ul>
-                        <li>意识数据结构（Consciousness Data Structure, CDS）</li>
-                        <li>神经连接映射协议（Neural Connection Mapping Protocol, NCMP）</li>
-                        <li>记忆编码规范（Memory Encoding Specification, MES）</li>
-                        <li>情感模拟框架（Emotional Simulation Framework, ESF）</li>
-                    </ul>
-                    
-                    <h2>3. 技术原理</h2>
-                    <p>mindcopy技术基于神经科学、量子计算和人工智能的最新研究成果，通过以下步骤实现意识的数字化：</p>
-                    
-                    <ol>
-                        <li><strong>神经活动记录</strong>：使用高精度脑机接口记录大脑神经元活动</li>
-                        <li><strong>数据预处理</strong>：去除噪声，提取有效信号</li>
-                        <li><strong>模式识别</strong>：识别思维模式、记忆片段和情感状态</li>
-                        <li><strong>数字化编码</strong>：将生物信号转换为数字信息</li>
-                        <li><strong>量子存储</strong>：利用量子计算技术进行高效存储</li>
-                    </ol>
-                    
-                    <h2>4. 应用示例</h2>
-                    <p>以下是mindcopy标准的几个典型应用场景：</p>
-                    
-                    <h3>4.1 数字孪生</h3>
-                    <p>创建个人意识的数字孪生体，用于远程交互、知识传承和自我探索。</p>
-                    
-                    <h3>4.2 认知增强</h3>
-                    <p>通过接入mindcopy系统，增强人类的记忆能力、学习能力和思维速度。</p>
-                    
-                    <h3>4.3 意识存档</h3>
-                    <p>将人类意识进行数字化存档，实现某种意义上的"数字永生"。</p>
-                </div>
-                <div class="article-footer">
-                    <a href="aricle/mindcopy标准介绍及其示例.docx" download class="download-original" data-lang="zh">下载原文</a>
-                    <a href="aricle/mindcopy标准介绍及其示例.docx" download class="download-original" data-lang="en">Download Original</a>
-                </div>
-                
-                <!-- 留言区域 -->
-                <div class="comments-section">
-                    <h3 class="comments-title" data-lang="zh">留言</h3>
-                    <h3 class="comments-title" data-lang="en">Comments</h3>
-                    
-                    <!-- 留言表单 -->
-                    <form class="comment-form" data-article-id="2">
-                        <div class="form-group">
-                            <label for="comment-name-2" data-lang="zh">您的昵称：</label>
-                            <label for="comment-name-2" data-lang="en">Your Name：</label>
-                            <input type="text" id="comment-name-2" name="comment-name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="comment-content-2" data-lang="zh">留言内容：</label>
-                            <label for="comment-content-2" data-lang="en">Comment Content：</label>
-                            <textarea id="comment-content-2" name="comment-content" rows="4" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="submit-comment">
-                            <span data-lang="zh">提交留言</span>
-                            <span data-lang="en">Submit Comment</span>
-                        </button>
-                    </form>
-                    
-                    <!-- 留言列表 -->
-                    <div class="comments-list" data-article-id="2">
-                        <p class="no-comments" data-lang="zh">暂无留言，来发表第一条留言吧！</p>
-                        <p class="no-comments" data-lang="en">No comments yet, be the first to comment!</p>
-                    </div>
-                </div>
-            </article>
-
-            <!-- 文章3详情 -->
-            <article id="article-3" class="full-article">
-                <div class="article-header">
-                    <h1 class="full-article-title">宇宙的意识</h1>
-                    <div class="full-article-meta">
-                        <span class="article-date" data-lang="zh">发布于 2024年9月20日</span>
-                        <span class="article-date" data-lang="en">Published on September 20, 2024</span>
-                        <span class="article-category"><a href="#category-philosophy" data-lang="zh">哲学</a><a href="#category-philosophy" data-lang="en">Philosophy</a></span>
-                    </div>
-                </div>
-                <div class="article-content">
-                    <p>当我们仰望星空，看到无数闪烁的星星，是否曾想过，整个宇宙可能也是一个巨大的意识体？</p>
-                    
-                    <h2>宇宙意识的可能性</h2>
-                    <p>现代物理学告诉我们，宇宙中的一切都由基本粒子组成，而这些粒子之间存在着复杂的相互作用。从微观的量子世界到宏观的星系尺度，都遵循着某种秩序和规律。这种秩序和规律，是否暗示着宇宙本身可能具有某种形式的意识？</p>
-                    
-                    <p>量子纠缠现象表明，两个相互纠缠的粒子无论相距多远，都能瞬间影响对方的状态。这种超越时空的联系，让人联想到意识的某些特性。或许，整个宇宙就是一个巨大的量子网络，而意识正是这个网络的涌现属性。</p>
-                    
-                    <h2>意识的层级结构</h2>
-                    <p>如果我们接受宇宙可能具有意识的观点，那么意识可能存在着层级结构：</p>
-                    
-                    <ul>
-                        <li><strong>微观意识</strong>：基本粒子层面的原始意识</li>
-                        <li><strong>生物意识</strong>：生物体层面的意识，如人类意识</li>
-                        <li><strong>群体意识</strong>：社会、文明层面的集体意识</li>
-                        <li><strong>宇宙意识</strong>：整个宇宙层面的宏观意识</li>
-                    </ul>
-                    
-                    <p>在这种层级结构中，每一层意识都是下一层意识的涌现结果，同时又受到上一层意识的影响。人类意识可能只是宇宙意识海洋中的一滴水，既独立又与整体相连。</p>
-                    
-                    <h2>意识与物质的关系</h2>
-                    <p>传统科学认为物质是第一性的，意识是物质的产物。但量子力学的发展让我们重新思考这一问题。或许，意识与物质是宇宙的两个方面，它们相互依存、相互转化，共同构成了我们所感知的世界。</p>
-                    
-                    <p>如果宇宙确实具有意识，那么我们每个人都是宇宙意识的表达，我们的思考、感受和创造，都是宇宙通过我们在认识自己。在这个意义上，我们与宇宙是一体的，我们的意识是宇宙意识的一部分。</p>
-                </div>
-                <div class="article-footer">
-                    <a href="aricle/宇宙的意识.docx" download class="download-original" data-lang="zh">下载原文</a>
-                    <a href="aricle/宇宙的意识.docx" download class="download-original" data-lang="en">Download Original</a>
-                </div>
-                
-                <!-- 留言区域 -->
-                <div class="comments-section">
-                    <h3 class="comments-title" data-lang="zh">留言</h3>
-                    <h3 class="comments-title" data-lang="en">Comments</h3>
-                    
-                    <!-- 留言表单 -->
-                    <form class="comment-form" data-article-id="3">
-                        <div class="form-group">
-                            <label for="comment-name-3" data-lang="zh">您的昵称：</label>
-                            <label for="comment-name-3" data-lang="en">Your Name：</label>
-                            <input type="text" id="comment-name-3" name="comment-name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="comment-content-3" data-lang="zh">留言内容：</label>
-                            <label for="comment-content-3" data-lang="en">Comment Content：</label>
-                            <textarea id="comment-content-3" name="comment-content" rows="4" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="submit-comment">
-                            <span data-lang="zh">提交留言</span>
-                            <span data-lang="en">Submit Comment</span>
-                        </button>
-                    </form>
-                    
-                    <!-- 留言列表 -->
-                    <div class="comments-list" data-article-id="3">
-                        <p class="no-comments" data-lang="zh">暂无留言，来发表第一条留言吧！</p>
-                        <p class="no-comments" data-lang="en">No comments yet, be the first to comment!</p>
-                    </div>
-                </div>
-            </article>
-
-            <!-- 文章4详情 -->
-            <article id="article-4" class="full-article">
-                <div class="article-header">
-                    <h1 class="full-article-title">青春诗 2.0</h1>
-                    <div class="full-article-meta">
-                        <span class="article-date" data-lang="zh">发布于 2024年8月5日</span>
-                        <span class="article-date" data-lang="en">Published on August 5, 2024</span>
-                        <span class="article-category"><a href="#category-poetry" data-lang="zh">诗歌</a><a href="#category-poetry" data-lang="en">Poetry</a></span>
-                    </div>
-                </div>
-                <div class="article-content">
-                    <p>青春是一首写不完的诗</p>
-                    <p>每一行都跳跃着鲜活的文字</p>
-                    <p>每一段都流淌着滚烫的热血</p>
-                    
-                    <p>我们在晨光中奔跑</p>
-                    <p>追逐着那道永不熄灭的理想之光</p>
-                    <p>我们在暮色中思考</p>
-                    <p>探索着生命最本真的意义</p>
-                    
-                    <p>青春是一场美丽的盛宴</p>
-                    <p>有欢笑，有泪水</p>
-                    <p>有相聚，有分离</p>
-                    <p>每一次经历都是珍贵的财富</p>
-                    
-                    <p>我们曾在星空下许下心愿</p>
-                    <p>也曾在风雨中迷失方向</p>
-                    <p>但无论怎样</p>
-                    <p>我们始终保持着那颗赤子之心</p>
-                    
-                    <p>青春是一条奔腾的河流</p>
-                    <p>永不停息，勇往直前</p>
-                    <p>它带着我们的梦想</p>
-                    <p>流向那未知而又充满希望的远方</p>
-                    
-                    <p>或许有一天</p>
-                    <p>我们会老去</p>
-                    <p>但青春的记忆</p>
-                    <p>将永远铭刻在我们的心中</p>
-                    <p>成为生命中最美丽的风景</p>
-                </div>
-                <div class="article-footer">
-                    <a href="aricle/青春诗 2.0.docx" download class="download-original" data-lang="zh">下载原文</a>
-                    <a href="aricle/青春诗 2.0.docx" download class="download-original" data-lang="en">Download Original</a>
-                </div>
-                
-                <!-- 留言区域 -->
-                <div class="comments-section">
-                    <h3 class="comments-title" data-lang="zh">留言</h3>
-                    <h3 class="comments-title" data-lang="en">Comments</h3>
-                    
-                    <!-- 留言表单 -->
-                    <form class="comment-form" data-article-id="4">
-                        <div class="form-group">
-                            <label for="comment-name-4" data-lang="zh">您的昵称：</label>
-                            <label for="comment-name-4" data-lang="en">Your Name：</label>
-                            <input type="text" id="comment-name-4" name="comment-name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="comment-content-4" data-lang="zh">留言内容：</label>
-                            <label for="comment-content-4" data-lang="en">Comment Content：</label>
-                            <textarea id="comment-content-4" name="comment-content" rows="4" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="submit-comment">
-                            <span data-lang="zh">提交留言</span>
-                            <span data-lang="en">Submit Comment</span>
-                        </button>
-                    </form>
-                    
-                    <!-- 留言列表 -->
-                    <div class="comments-list" data-article-id="4">
-                        <p class="no-comments" data-lang="zh">暂无留言，来发表第一条留言吧！</p>
-                        <p class="no-comments" data-lang="en">No comments yet, be the first to comment!</p>
-                    </div>
-                </div>
-            </article>
+            </div>
         </section>
     </main>
 
@@ -447,5 +155,6 @@
 
     <!-- JavaScript -->
     <script src="script.js"></script>
+    <script src="article_loader.js" type="module"></script>
 </body>
 </html>
