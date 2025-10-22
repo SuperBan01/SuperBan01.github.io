@@ -122,9 +122,16 @@ function setupSmoothScroll() {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
+            const targetHref = this.getAttribute('href');
             
+            // 如果是外部链接（指向其他页面），直接跳转
+            if (targetHref.includes('.html')) {
+                window.location.href = targetHref;
+                return;
+            }
+            
+            // 如果是内部锚点，执行平滑滚动
+            const targetElement = document.querySelector(targetHref);
             if (targetElement) {
                 window.scrollTo({
                     top: targetElement.offsetTop - 80, // 减去导航栏高度
@@ -133,6 +140,148 @@ function setupSmoothScroll() {
             }
         });
     });
+}
+
+// 博客页面留言系统
+function setupBlogCommentSystem() {
+    // 设置所有留言表单
+    document.querySelectorAll('.comment-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const articleId = this.dataset.articleId;
+            const nameInput = this.querySelector('input[name="comment-name"]');
+            const contentInput = this.querySelector('textarea[name="comment-content"]');
+            
+            const name = nameInput.value.trim();
+            const content = contentInput.value.trim();
+            
+            if (name && content) {
+                addComment(articleId, name, content);
+                
+                // 重置表单
+                nameInput.value = '';
+                contentInput.value = '';
+                
+                // 重新加载当前文章的留言
+                loadCommentsForArticle(articleId);
+            }
+        });
+    });
+    
+    // 加载所有文章的留言
+    document.querySelectorAll('.comments-list').forEach(list => {
+        const articleId = list.dataset.articleId;
+        loadCommentsForArticle(articleId);
+    });
+    
+    // 更新所有文章的留言计数
+    updateAllCommentCounts();
+}
+
+// 加载指定文章的留言
+function loadCommentsForArticle(articleId) {
+    const comments = getComments(articleId);
+    const commentsList = document.querySelector(`.comments-list[data-article-id="${articleId}"]`);
+    
+    if (!commentsList) return;
+    
+    // 清空现有留言
+    commentsList.innerHTML = '';
+    
+    if (comments.length === 0) {
+        commentsList.innerHTML = `
+            <p class="no-comments" data-lang="zh">暂无留言，来发表第一条留言吧！</p>
+            <p class="no-comments" data-lang="en">No comments yet, be the first to comment!</p>
+        `;
+        updateLanguage();
+        return;
+    }
+    
+    // 按时间排序（最新的在前）
+    comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    // 添加留言
+    comments.forEach(comment => {
+        commentsList.appendChild(createCommentElement(comment));
+    });
+}
+
+// 创建留言元素
+function createCommentElement(comment) {
+    const commentItem = document.createElement('div');
+    commentItem.className = 'comment-item';
+    
+    const formattedDate = new Date(comment.timestamp).toLocaleString();
+    
+    commentItem.innerHTML = `
+        <div class="comment-header">
+            <span class="comment-author">${escapeHtml(comment.name)}</span>
+            <span class="comment-time">${formattedDate}</span>
+        </div>
+        <div class="comment-body">${escapeHtml(comment.content)}</div>
+    `;
+    
+    return commentItem;
+}
+
+// 添加留言
+function addComment(articleId, name, content) {
+    const comments = getComments(articleId);
+    
+    const newComment = {
+        id: Date.now().toString(),
+        name: name,
+        content: content,
+        timestamp: new Date().toISOString()
+    };
+    
+    comments.push(newComment);
+    localStorage.setItem(`article_${articleId}_comments`, JSON.stringify(comments));
+    updateLanguage();
+    
+    // 更新留言计数
+    updateCommentCount(articleId);
+}
+
+// 获取留言
+function getComments(articleId) {
+    const commentsJson = localStorage.getItem(`article_${articleId}_comments`);
+    return commentsJson ? JSON.parse(commentsJson) : [];
+}
+
+// 更新所有文章的留言计数
+function updateAllCommentCounts() {
+    document.querySelectorAll('.blog-article-item').forEach(article => {
+        const articleId = article.dataset.articleId;
+        updateCommentCount(articleId);
+    });
+}
+
+// 更新单个文章的留言计数
+function updateCommentCount(articleId) {
+    const comments = getComments(articleId);
+    
+    // 更新文章列表中的计数
+    const listCountElements = document.querySelectorAll(`.blog-article-item[data-article-id="${articleId}"] .comment-number`);
+    listCountElements.forEach(element => {
+        element.textContent = comments.length;
+        element.dataset.count = comments.length;
+    });
+    
+    // 兼容原有的计数元素
+    const countElement = document.querySelector(`.article-item[data-article-id="${articleId}"] .comment-count`);
+    if (countElement) {
+        countElement.textContent = comments.length;
+        countElement.dataset.count = comments.length;
+    }
+}
+
+// HTML转义函数
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // 文章模态框功能
@@ -145,6 +294,8 @@ function setupArticleModal() {
     const commentsList = document.getElementById('comments-list');
     
     let currentArticleId = null;
+    
+    if (!modal) return; // 如果模态框不存在，则不执行初始化
     
     // 打开模态框
     document.querySelectorAll('.article-comment-btn').forEach(btn => {
@@ -211,10 +362,12 @@ function setupArticleModal() {
     }
 }
 
-// 加载留言
+// 加载模态框中的留言
 function loadComments(articleId) {
     const commentsList = document.getElementById('comments-list');
     const comments = getComments(articleId);
+    
+    if (!commentsList) return;
     
     // 清空留言列表
     commentsList.innerHTML = '';
@@ -240,66 +393,6 @@ function loadComments(articleId) {
             commentsList.appendChild(commentElement);
         });
     }
-}
-
-// 创建留言元素
-function createCommentElement(comment) {
-    const commentItem = document.createElement('div');
-    commentItem.className = 'comment-item';
-    
-    const formattedDate = new Date(comment.date).toLocaleString();
-    
-    commentItem.innerHTML = `
-        <div class="comment-header">
-            <span class="comment-author">${escapeHtml(comment.name)}</span>
-            <span class="comment-date">${formattedDate}</span>
-        </div>
-        <div class="comment-content">${escapeHtml(comment.content)}</div>
-    `;
-    
-    return commentItem;
-}
-
-// 添加留言
-function addComment(articleId, name, content) {
-    const comments = getComments(articleId);
-    
-    const newComment = {
-        id: Date.now().toString(),
-        name: name,
-        content: content,
-        date: new Date().toISOString()
-    };
-    
-    comments.push(newComment);
-    localStorage.setItem(`article_${articleId}_comments`, JSON.stringify(comments));
-    
-    // 重新加载留言
-    loadComments(articleId);
-}
-
-// 获取留言
-function getComments(articleId) {
-    const commentsJson = localStorage.getItem(`article_${articleId}_comments`);
-    return commentsJson ? JSON.parse(commentsJson) : [];
-}
-
-// 更新留言数量
-function updateCommentCount(articleId) {
-    const comments = getComments(articleId);
-    const countElement = document.querySelector(`.article-item[data-article-id="${articleId}"] .comment-count`);
-    
-    if (countElement) {
-        countElement.textContent = comments.length;
-        countElement.dataset.count = comments.length;
-    }
-}
-
-// HTML转义函数
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
 }
 
 // 轮播图功能
@@ -418,9 +511,16 @@ window.addEventListener('DOMContentLoaded', () => {
     // 初始化文章模态框和留言系统
     setupArticleModal();
     
+    // 初始化博客评论系统（如果在博客页面）
+    if (window.location.pathname.includes('blog.html')) {
+        setupBlogCommentSystem();
+    }
+    
     // 初始化文章留言计数
-    document.querySelectorAll('.article-item').forEach(item => {
+    document.querySelectorAll('.article-item, .blog-article-item').forEach(item => {
         const articleId = item.dataset.articleId;
-        updateCommentCount(articleId);
+        if (articleId) {
+            updateCommentCount(articleId);
+        }
     });
 });
