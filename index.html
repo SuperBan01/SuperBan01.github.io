@@ -19,6 +19,17 @@
         <button id="btn-zh" class="lang-btn active">中文</button>
         <button id="btn-en" class="lang-btn">English</button>
     </div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#header" data-lang="zh">首页</a><a href="#header" data-lang="en">Home</a></li>
+            <li><a href="#tech-dimension" data-lang="zh">技术之维</a><a href="#tech-dimension" data-lang="en">Technical</a></li>
+            <li><a href="#human-dimension" data-lang="zh">人文之维</a><a href="#human-dimension" data-lang="en">Humanistic</a></li>
+            <li><a href="#timeline" data-lang="zh">时间线</a><a href="#timeline" data-lang="en">Timeline</a></li>
+            <li><a href="#articles" data-lang="zh">文章</a><a href="#articles" data-lang="en">Articles</a></li>
+        </ul>
+    </nav>
     <!-- 顶部标题区 -->
     <header class="header">
         <div class="avatar-container">
@@ -211,6 +222,141 @@
                 <blockquote class="quote" data-lang="en">"Humans are not replaced by AI, but awakened by their new form."</blockquote>
                 <blockquote class="quote" data-lang="zh">"技术是形式，人文是灵魂。梦蝶即是两者的交点。"</blockquote>
                 <blockquote class="quote" data-lang="en">"Technology is the form, humanity is the soul. DreamFly is the intersection of both."</blockquote>
+            </div>
+        
+        <!-- 文章部分 -->
+        <section id="articles" class="articles-section">
+            <div class="articles-header">
+                <h2 class="articles-title" data-lang="zh">我的文章</h2>
+                <h2 class="articles-title" data-lang="en">My Articles</h2>
+                <p class="articles-subtitle" data-lang="zh">思想的载体，意识的碎片</p>
+                <p class="articles-subtitle" data-lang="en">Vessels of thought, fragments of consciousness</p>
+            </div>
+            
+            <div class="articles-container">
+                <!-- 文章列表 -->
+                <div class="articles-list">
+                    <div class="article-item" data-article-id="1">
+                        <h3 class="article-name">12.14雪夜</h3>
+                        <p class="article-desc" data-lang="zh">一场雪夜的思考与感悟</p>
+                        <p class="article-desc" data-lang="en">Thoughts and insights on a snowy night</p>
+                        <div class="article-actions">
+                            <a href="aricle/12.14雪夜.docx" download class="article-download">
+                                <span data-lang="zh">下载文档</span>
+                                <span data-lang="en">Download</span>
+                            </a>
+                            <button class="article-comment-btn">
+                                <span data-lang="zh">查看留言</span>
+                                <span data-lang="en">Comments</span>
+                                <span class="comment-count" data-count="0">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="article-item" data-article-id="2">
+                        <h3 class="article-name">mindcopy标准介绍及其示例</h3>
+                        <p class="article-desc" data-lang="zh">关于意识复制技术的标准与实践</p>
+                        <p class="article-desc" data-lang="en">Standards and practices for consciousness copying technology</p>
+                        <div class="article-actions">
+                            <a href="aricle/mindcopy标准介绍及其示例.docx" download class="article-download">
+                                <span data-lang="zh">下载文档</span>
+                                <span data-lang="en">Download</span>
+                            </a>
+                            <button class="article-comment-btn">
+                                <span data-lang="zh">查看留言</span>
+                                <span data-lang="en">Comments</span>
+                                <span class="comment-count" data-count="0">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="article-item" data-article-id="3">
+                        <h3 class="article-name">宇宙的意识</h3>
+                        <p class="article-desc" data-lang="zh">探索宇宙与意识的关系</p>
+                        <p class="article-desc" data-lang="en">Exploring the relationship between the universe and consciousness</p>
+                        <div class="article-actions">
+                            <a href="aricle/宇宙的意识.docx" download class="article-download">
+                                <span data-lang="zh">下载文档</span>
+                                <span data-lang="en">Download</span>
+                            </a>
+                            <button class="article-comment-btn">
+                                <span data-lang="zh">查看留言</span>
+                                <span data-lang="en">Comments</span>
+                                <span class="comment-count" data-count="0">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="article-item" data-article-id="4">
+                        <h3 class="article-name">青春诗 2.0</h3>
+                        <p class="article-desc" data-lang="zh">关于青春的诗意表达</p>
+                        <p class="article-desc" data-lang="en">Poetic expressions about youth</p>
+                        <div class="article-actions">
+                            <a href="aricle/青春诗 2.0.docx" download class="article-download">
+                                <span data-lang="zh">下载文档</span>
+                                <span data-lang="en">Download</span>
+                            </a>
+                            <button class="article-comment-btn">
+                                <span data-lang="zh">查看留言</span>
+                                <span data-lang="en">Comments</span>
+                                <span class="comment-count" data-count="0">0</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 文章详情与留言模态框 -->
+            <div id="article-modal" class="article-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="modal-article-title"></h3>
+                        <button id="close-modal" class="close-modal">&times;</button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="article-preview">
+                            <p class="preview-text" data-lang="zh">点击下方按钮下载完整文章</p>
+                            <p class="preview-text" data-lang="en">Click the button below to download the full article</p>
+                            <a id="modal-download-link" href="" download class="article-download large">
+                                <span data-lang="zh">下载文章</span>
+                                <span data-lang="en">Download Article</span>
+                            </a>
+                        </div>
+                        
+                        <!-- 留言区域 -->
+                        <div class="comments-section">
+                            <h4 class="comments-title" data-lang="zh">留言</h4>
+                            <h4 class="comments-title" data-lang="en">Comments</h4>
+                            
+                            <!-- 留言表单 -->
+                            <form id="comment-form" class="comment-form">
+                                <div class="form-group">
+                                    <label for="comment-name" data-lang="zh">您的昵称：</label>
+                                    <label for="comment-name" data-lang="en">Your Name：</label>
+                                    <input type="text" id="comment-name" name="comment-name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="comment-content" data-lang="zh">留言内容：</label>
+                                    <label for="comment-content" data-lang="en">Comment Content：</label>
+                                    <textarea id="comment-content" name="comment-content" rows="4" required></textarea>
+                                </div>
+                                
+                                <button type="submit" class="submit-comment">
+                                    <span data-lang="zh">提交留言</span>
+                                    <span data-lang="en">Submit Comment</span>
+                                </button>
+                            </form>
+                            
+                            <!-- 留言列表 -->
+                            <div id="comments-list" class="comments-list">
+                                <p class="no-comments" data-lang="zh">暂无留言，来发表第一条留言吧！</p>
+                                <p class="no-comments" data-lang="en">No comments yet, be the first to comment!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

@@ -116,6 +116,192 @@ function setupGitHubPagesCompatibility() {
     }
 }
 
+// 导航栏平滑滚动
+function setupSmoothScroll() {
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80, // 减去导航栏高度
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// 文章模态框功能
+function setupArticleModal() {
+    const modal = document.getElementById('article-modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalTitle = document.getElementById('modal-article-title');
+    const modalDownloadLink = document.getElementById('modal-download-link');
+    const commentForm = document.getElementById('comment-form');
+    const commentsList = document.getElementById('comments-list');
+    
+    let currentArticleId = null;
+    
+    // 打开模态框
+    document.querySelectorAll('.article-comment-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const articleItem = this.closest('.article-item');
+            currentArticleId = articleItem.dataset.articleId;
+            const articleName = articleItem.querySelector('.article-name').textContent;
+            const downloadLink = articleItem.querySelector('.article-download').href;
+            
+            // 设置模态框内容
+            modalTitle.textContent = articleName;
+            modalDownloadLink.href = downloadLink;
+            
+            // 显示模态框
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+            
+            // 加载留言
+            loadComments(currentArticleId);
+        });
+    });
+    
+    // 关闭模态框
+    closeModal.addEventListener('click', function() {
+        closeArticleModal();
+    });
+    
+    // 点击模态框外部关闭
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeArticleModal();
+        }
+    });
+    
+    // ESC键关闭模态框
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'block') {
+            closeArticleModal();
+        }
+    });
+    
+    // 提交留言
+    commentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('comment-name').value;
+        const content = document.getElementById('comment-content').value;
+        
+        if (name && content && currentArticleId) {
+            addComment(currentArticleId, name, content);
+            
+            // 清空表单
+            commentForm.reset();
+            
+            // 更新留言数量
+            updateCommentCount(currentArticleId);
+        }
+    });
+    
+    function closeArticleModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        currentArticleId = null;
+    }
+}
+
+// 加载留言
+function loadComments(articleId) {
+    const commentsList = document.getElementById('comments-list');
+    const comments = getComments(articleId);
+    
+    // 清空留言列表
+    commentsList.innerHTML = '';
+    
+    if (comments.length === 0) {
+        // 显示无留言提示
+        const noCommentsZh = document.createElement('p');
+        noCommentsZh.className = 'no-comments';
+        noCommentsZh.dataset.lang = 'zh';
+        noCommentsZh.textContent = '暂无留言，来发表第一条留言吧！';
+        
+        const noCommentsEn = document.createElement('p');
+        noCommentsEn.className = 'no-comments';
+        noCommentsEn.dataset.lang = 'en';
+        noCommentsEn.textContent = 'No comments yet, be the first to comment!';
+        
+        commentsList.appendChild(noCommentsZh);
+        commentsList.appendChild(noCommentsEn);
+    } else {
+        // 显示留言列表
+        comments.forEach(comment => {
+            const commentElement = createCommentElement(comment);
+            commentsList.appendChild(commentElement);
+        });
+    }
+}
+
+// 创建留言元素
+function createCommentElement(comment) {
+    const commentItem = document.createElement('div');
+    commentItem.className = 'comment-item';
+    
+    const formattedDate = new Date(comment.date).toLocaleString();
+    
+    commentItem.innerHTML = `
+        <div class="comment-header">
+            <span class="comment-author">${escapeHtml(comment.name)}</span>
+            <span class="comment-date">${formattedDate}</span>
+        </div>
+        <div class="comment-content">${escapeHtml(comment.content)}</div>
+    `;
+    
+    return commentItem;
+}
+
+// 添加留言
+function addComment(articleId, name, content) {
+    const comments = getComments(articleId);
+    
+    const newComment = {
+        id: Date.now().toString(),
+        name: name,
+        content: content,
+        date: new Date().toISOString()
+    };
+    
+    comments.push(newComment);
+    localStorage.setItem(`article_${articleId}_comments`, JSON.stringify(comments));
+    
+    // 重新加载留言
+    loadComments(articleId);
+}
+
+// 获取留言
+function getComments(articleId) {
+    const commentsJson = localStorage.getItem(`article_${articleId}_comments`);
+    return commentsJson ? JSON.parse(commentsJson) : [];
+}
+
+// 更新留言数量
+function updateCommentCount(articleId) {
+    const comments = getComments(articleId);
+    const countElement = document.querySelector(`.article-item[data-article-id="${articleId}"] .comment-count`);
+    
+    if (countElement) {
+        countElement.textContent = comments.length;
+        countElement.dataset.count = comments.length;
+    }
+}
+
+// HTML转义函数
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 // 轮播图功能
 function initCarousel() {
     const carousel = document.querySelector('.carousel');
@@ -225,4 +411,16 @@ window.addEventListener('DOMContentLoaded', () => {
     
     // 初始化轮播图
     initCarousel();
+    
+    // 初始化导航栏平滑滚动
+    setupSmoothScroll();
+    
+    // 初始化文章模态框和留言系统
+    setupArticleModal();
+    
+    // 初始化文章留言计数
+    document.querySelectorAll('.article-item').forEach(item => {
+        const articleId = item.dataset.articleId;
+        updateCommentCount(articleId);
+    });
 });
