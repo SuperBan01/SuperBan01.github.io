@@ -30,19 +30,64 @@ function setupLanguageSwitch() {
     // 初始设置为中文
     body.classList.add('zh');
     
-    btnZh.addEventListener('click', () => {
-        body.classList.remove('en');
-        body.classList.add('zh');
-        btnZh.classList.add('active');
-        btnEn.classList.remove('active');
+    // 检查按钮是否存在，避免在没有语言切换按钮的页面抛出错误
+    if (btnZh && btnEn) {
+        btnZh.addEventListener('click', () => {
+            body.classList.remove('en');
+            body.classList.add('zh');
+            btnZh.classList.add('active');
+            btnEn.classList.remove('active');
+            updateLanguage();
+        });
+        
+        btnEn.addEventListener('click', () => {
+            body.classList.remove('zh');
+            body.classList.add('en');
+            btnEn.classList.add('active');
+            btnZh.classList.remove('active');
+            updateLanguage();
+        });
+    }
+}
+
+// 更新页面语言显示
+function updateLanguage() {
+    const isChinese = document.body.classList.contains('zh');
+    
+    // 隐藏所有语言元素
+    document.querySelectorAll('[data-lang="zh"]').forEach(el => {
+        el.style.display = isChinese ? 'block' : 'none';
     });
     
-    btnEn.addEventListener('click', () => {
-        body.classList.remove('zh');
-        body.classList.add('en');
-        btnEn.classList.add('active');
-        btnZh.classList.remove('active');
+    document.querySelectorAll('[data-lang="en"]').forEach(el => {
+        el.style.display = isChinese ? 'none' : 'block';
     });
+    
+    // 特别处理博客页面的元素
+    const backToList = document.querySelector('.back-to-list');
+    if (backToList) {
+        backToList.textContent = isChinese ? '返回文章列表' : 'Back to List';
+    }
+    
+    const viewComments = document.querySelectorAll('.view-comments');
+    viewComments.forEach(btn => {
+        btn.textContent = isChinese ? '查看评论' : 'View Comments';
+    });
+    
+    const commentNameLabel = document.querySelector('label[for="comment-name"]');
+    if (commentNameLabel) {
+        commentNameLabel.textContent = isChinese ? '您的名字:' : 'Your Name:';
+    }
+    
+    const commentContentLabel = document.querySelector('label[for="comment-content"]');
+    if (commentContentLabel) {
+        commentContentLabel.textContent = isChinese ? '留言内容:' : 'Comment:';
+    }
+    
+    const submitCommentBtn = document.querySelector('.comment-form button[type="submit"]');
+    if (submitCommentBtn) {
+        submitCommentBtn.textContent = isChinese ? '发表留言' : 'Submit Comment';
+    }
 }
 
 // 添加简约的滚动动画效果
@@ -481,6 +526,182 @@ function initCarousel() {
     startAutoPlay();
 }
 
+// 博客文章数据
+const blogArticles = [
+    { id: '12.14雪夜', title: '12.14雪夜', file: 'aricle/青春诗.txt', date: '2023-12-14', type: 'txt' },
+    { id: 'mindcopy', title: 'mindcopy标准介绍及其示例', file: 'aricle/mindcopy.txt', date: '2023-11-20', type: 'txt' },
+    { id: 'universe-consciousness', title: '宇宙的意识', file: 'aricle/宇宙的意识.txt', date: '2023-10-15', type: 'txt' },
+    { id: 'youth-poem', title: '青春诗 2.0', file: 'aricle/少年传.txt', date: '2023-09-01', type: 'txt' },
+    { id: 'youth-poem-pdf', title: '《青春诗》导演阐释及影像风格参考', file: 'aricle/《青春诗》导演阐释及影像风格参考.pdf', date: '2023-08-10', type: 'pdf' }
+];
+
+// 博客页面文章查看功能
+function setupBlogArticleViewer() {
+    const articleList = document.querySelector('.blog-article-list');
+    const articleDetail = document.querySelector('.blog-article-detail');
+    const backToListBtn = document.querySelector('.back-to-list');
+    const articleTitle = document.querySelector('.blog-article-detail h2');
+    const articleDate = document.querySelector('.article-meta .date');
+    const articleContent = document.querySelector('.article-content');
+    const downloadBtn = document.querySelector('.download-article');
+    const commentSection = document.querySelector('.blog-article-detail .comment-section');
+    const commentForm = document.querySelector('.comment-form');
+    const commentsList = document.querySelector('.comments-list');
+    const currentArticleId = new URLSearchParams(window.location.search).get('id');
+    let currentViewingArticle = null;
+    
+    if (!articleList || !articleDetail) return;
+    
+    // 如果URL中有文章ID参数，直接显示对应文章
+    if (currentArticleId) {
+        const article = blogArticles.find(a => a.id === currentArticleId);
+        if (article) {
+            showArticleDetail(article);
+        }
+    }
+    
+    // 点击文章列表项
+    document.querySelectorAll('.blog-article-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const articleId = item.dataset.articleId;
+            const article = blogArticles.find(a => a.id === articleId);
+            if (article) {
+                showArticleDetail(article);
+                // 更新URL参数
+                history.pushState(null, null, `?id=${articleId}`);
+            }
+        });
+    });
+    
+    // 返回文章列表
+    if (backToListBtn) {
+        backToListBtn.addEventListener('click', () => {
+            articleList.style.display = 'grid';
+            articleDetail.style.display = 'none';
+            // 移除URL参数
+            history.pushState(null, null, window.location.pathname);
+            updateLanguage();
+        });
+    }
+    
+    // 显示文章详情
+    function showArticleDetail(article) {
+        currentViewingArticle = article;
+        
+        // 更新标题和元信息
+        if (articleTitle) articleTitle.textContent = article.title;
+        if (articleDate) articleDate.textContent = article.date;
+        
+        // 设置下载链接
+        if (downloadBtn) {
+            downloadBtn.href = article.file;
+            downloadBtn.textContent = article.type === 'pdf' ? '下载PDF' : '下载原文';
+        }
+        
+        // 加载文章内容（仅TXT文件）
+        if (articleContent) {
+            if (article.type === 'txt') {
+                fetch(article.file)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.text();
+                    })
+                    .then(text => {
+                        // 格式化文本为HTML，保留换行和基本格式
+                        const formattedContent = text
+                            .replace(/\n\n/g, '</p><p>')
+                            .replace(/\n/g, '<br>')
+                            .replace(/^/g, '<p>')
+                            .replace(/$/g, '</p>');
+                        articleContent.innerHTML = formattedContent;
+                    })
+                    .catch(error => {
+                        articleContent.innerHTML = `<p>加载文章内容失败: ${error.message}</p>`;
+                    });
+            } else {
+                articleContent.innerHTML = `<p>这是一个PDF文件，请点击上方下载按钮查看完整内容。</p>`;
+            }
+        }
+        
+        // 加载评论
+        if (commentSection && commentsList) {
+            loadArticleComments(article.id);
+        }
+        
+        // 切换视图
+        articleList.style.display = 'none';
+        articleDetail.style.display = 'block';
+        updateLanguage();
+    }
+    
+    // 提交评论
+    if (commentForm) {
+        commentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!currentViewingArticle) return;
+            
+            const nameInput = document.getElementById('comment-name');
+            const contentInput = document.getElementById('comment-content');
+            
+            const name = nameInput.value.trim();
+            const content = contentInput.value.trim();
+            
+            if (name && content) {
+                addComment(currentViewingArticle.id, name, content);
+                loadArticleComments(currentViewingArticle.id);
+                
+                // 清空表单
+                nameInput.value = '';
+                contentInput.value = '';
+            }
+        });
+    }
+    
+    // 加载文章评论
+    function loadArticleComments(articleId) {
+        if (!commentsList) return;
+        
+        const comments = getComments(articleId);
+        
+        // 清空评论列表
+        commentsList.innerHTML = '';
+        
+        if (comments.length === 0) {
+            // 显示无评论提示
+            const noCommentsZh = document.createElement('p');
+            noCommentsZh.className = 'no-comments';
+            noCommentsZh.dataset.lang = 'zh';
+            noCommentsZh.textContent = '暂无留言，来发表第一条留言吧！';
+            
+            const noCommentsEn = document.createElement('p');
+            noCommentsEn.className = 'no-comments';
+            noCommentsEn.dataset.lang = 'en';
+            noCommentsEn.textContent = 'No comments yet, be the first to comment!';
+            
+            commentsList.appendChild(noCommentsZh);
+            commentsList.appendChild(noCommentsEn);
+        } else {
+            // 按时间排序（最新的在前）
+            comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            // 添加评论
+            comments.forEach(comment => {
+                commentsList.appendChild(createCommentElement(comment));
+            });
+        }
+    }
+}
+
+// 更新博客评论系统以支持新的博客页面设计
+function setupBlogCommentSystem() {
+    // 初始化博客文章查看器
+    setupBlogArticleViewer();
+    
+    // 更新语言显示
+    updateLanguage();
+}
+
 // 页面加载完成后初始化所有功能
 window.addEventListener('DOMContentLoaded', () => {
     // 初始化生命计时器
@@ -508,12 +729,12 @@ window.addEventListener('DOMContentLoaded', () => {
     // 初始化导航栏平滑滚动
     setupSmoothScroll();
     
-    // 初始化文章模态框和留言系统
-    setupArticleModal();
-    
     // 初始化博客评论系统（如果在博客页面）
     if (window.location.pathname.includes('blog.html')) {
         setupBlogCommentSystem();
+    } else {
+        // 在其他页面初始化文章模态框和留言系统
+        setupArticleModal();
     }
     
     // 初始化文章留言计数
