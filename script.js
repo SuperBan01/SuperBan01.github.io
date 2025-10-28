@@ -716,23 +716,36 @@ function setupBlogArticleViewer() {
         // 构建文件URL
     let fileUrl;
     
-    // 确保articleFile不以'/'开头
-    const cleanArticleFile = articleFile.startsWith('/') ? articleFile.substring(1) : articleFile;
+    // 处理文件路径，确保格式正确
+  let cleanArticleFile;
+  
+  // 检查articleFile是否已经包含目录结构，确保只保留正确的路径格式
+  if (articleFile.includes('/')) {
+    // 如果已经包含路径分隔符，直接使用（通常格式为 'aricle/文件名.md'）
+    cleanArticleFile = articleFile;
+  } else {
+    // 否则添加正确的目录
+    cleanArticleFile = 'aricle/' + articleFile;
+  }
+  
+  // 确保不以'/'开头
+  cleanArticleFile = cleanArticleFile.startsWith('/') ? cleanArticleFile.substring(1) : cleanArticleFile;
+  
+  // 检测是否在GitHub Pages环境
+  const isGitHubPages = window.location.hostname.includes('github.io');
+  
+  // 重要：直接从网站根目录构建URL，完全不包含任何页面路径（如blog.html）
+  if (isGitHubPages) {
+    // 提取仓库名（如果存在）
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const repoName = pathParts.length > 0 && pathParts[0] !== 'blog.html' ? pathParts[0] : '';
     
-    // 检测是否在GitHub Pages环境
-    const isGitHubPages = window.location.hostname.includes('github.io');
-    
-    if (isGitHubPages) {
-        // GitHub Pages环境 - 重要: 直接从根目录构建URL，不包含任何页面路径
-        const pathParts = window.location.pathname.split('/').filter(Boolean);
-        const repoName = pathParts.length > 0 ? pathParts[0] : '';
-        
-        // 构建正确的URL，确保不包含blog.html或其他页面路径
-        if (repoName && repoName !== 'blog.html') {
-          fileUrl = `${window.location.origin}/${repoName}/${cleanArticleFile}`;
-        } else {
-          fileUrl = `${window.location.origin}/${cleanArticleFile}`;
-        }
+    // 构建最终URL
+    if (repoName) {
+      fileUrl = `${window.location.origin}/${repoName}/${cleanArticleFile}`;
+    } else {
+      fileUrl = `${window.location.origin}/${cleanArticleFile}`;
+    }
     } else if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
         // 本地HTTP/HTTPS环境 - 直接从网站根目录加载，不包含任何页面路径
         fileUrl = `${window.location.origin}/${cleanArticleFile}`;
