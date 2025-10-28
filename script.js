@@ -723,11 +723,25 @@ function setupBlogArticleViewer() {
   // 处理文件路径，确保格式正确
   let cleanArticleFile;
   
+  // 注意：目录名是'aricle'(带一个'c')而不是'article'(带两个'c')
+  console.log('注意：使用正确的目录名 "aricle"（带一个"c"）');
+  
   // 检查articleFile是否已经包含目录结构，确保只保留正确的路径格式
   if (articleFile.includes('/')) {
-    // 如果已经包含路径分隔符，直接使用（通常格式为 'aricle/文件名.md'）
-    cleanArticleFile = articleFile;
-    console.log('已包含路径，使用原始路径:', cleanArticleFile);
+    // 如果已经包含路径分隔符，检查是否已经包含'aricle'目录
+    if (articleFile.includes('aricle/')) {
+      // 如果已经包含正确的目录，直接使用
+      cleanArticleFile = articleFile;
+      console.log('已包含正确目录，使用原始路径:', cleanArticleFile);
+    } else if (articleFile.includes('article/')) {
+      // 如果包含的是错误拼写的'article'目录，修正为'aricle'
+      cleanArticleFile = articleFile.replace('article/', 'aricle/');
+      console.log('修正目录拼写错误，新路径:', cleanArticleFile);
+    } else {
+      // 其他情况，直接使用
+      cleanArticleFile = articleFile;
+      console.log('已包含路径，使用原始路径:', cleanArticleFile);
+    }
   } else {
     // 否则添加正确的目录
     cleanArticleFile = 'aricle/' + articleFile;
