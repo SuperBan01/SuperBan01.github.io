@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的博客 - 刘骁奔</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Markdown解析库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 代码高亮库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/github.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js/highlight.min.js"></script>
+    <!-- GitHub风格样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+    <!-- DOMPurify用于内容净化 -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
 </head>
 <body>
     <!-- 导航栏 -->
@@ -15,11 +24,7 @@
         </ul>
     </nav>
     
-    <!-- 语言切换按钮 -->
-    <button id="language-toggle" class="language-toggle">
-        <span data-lang="zh">EN</span>
-        <span data-lang="en">中文</span>
-    </button>
+
     
     <!-- 博客标题区 -->
     <header class="blog-header">
@@ -33,126 +38,70 @@
     <main class="blog-main">
         <!-- 文章列表视图 -->
         <section id="articles-list-view" class="blog-articles">
-            <div class="articles-grid">
+            <div class="articles-waterfall">
                 <!-- 文章项1 -->
-                <article class="blog-article-item" data-article-id="12.14雪夜">
-                    <div class="article-card">
-                        <div class="article-date-badge">
-                            <span class="date-day">14</span>
-                            <span class="date-month">Dec</span>
-                        </div>
-                        <h2 class="article-title">12.14雪夜</h2>
-                        <div class="article-meta">
-                            <span class="article-category">思考</span>
-                            <span class="comment-count">
-                                <span class="comment-icon">💬</span>
-                                <span class="comment-number" data-count="0">0</span>
-                            </span>
-                        </div>
-                        <div class="article-excerpt">
-                            雪，纷纷扬扬地落着。窗外的世界一片银白，仿佛时间都慢了下来。我站在窗前，看着雪花一片片飘落...
-                        </div>
-                        <button class="read-more-btn">
-                            <span data-lang="zh">阅读全文</span>
-                            <span data-lang="en">Read More</span>
-                        </button>
+                <article class="blog-article-item" data-article-id="mindcopy" data-file="aricle/mindcopy.md" data-type="md">
+                    <div class="article-header-info">
+                        <span class="article-date">2023-11-20</span>
+                        <span class="article-category">技术</span>
+                    </div>
+                    <h2 class="article-title">mindcopy标准介绍及其示例</h2>
+                    <p class="article-summary">随着人工智能技术的飞速发展，人类对于意识复制的探索也日益深入。本文将详细介绍mindcopy标准的基本概念、技术原理和应用场景。</p>
+                    <div class="article-footer">
+                        <span class="article-read-more">阅读全文 →</span>
                     </div>
                 </article>
 
                 <!-- 文章项2 -->
-                <article class="blog-article-item" data-article-id="mindcopy">
-                    <div class="article-card">
-                        <div class="article-date-badge">
-                            <span class="date-day">20</span>
-                            <span class="date-month">Nov</span>
-                        </div>
-                        <h2 class="article-title">mindcopy标准介绍及其示例</h2>
-                        <div class="article-meta">
-                            <span class="article-category">技术</span>
-                            <span class="comment-count">
-                                <span class="comment-icon">💬</span>
-                                <span class="comment-number" data-count="0">0</span>
-                            </span>
-                        </div>
-                        <div class="article-excerpt">
-                            随着人工智能技术的飞速发展，人类对于意识复制的探索也日益深入。本文将详细介绍mindcopy标准的基本概念...
-                        </div>
-                        <button class="read-more-btn">
-                            <span data-lang="zh">阅读全文</span>
-                            <span data-lang="en">Read More</span>
-                        </button>
+                <article class="blog-article-item" data-article-id="宇宙的意识" data-file="aricle/宇宙的意识.md" data-type="md">
+                    <div class="article-header-info">
+                        <span class="article-date">2023-10-15</span>
+                        <span class="article-category">哲学</span>
+                    </div>
+                    <h2 class="article-title">宇宙的意识</h2>
+                    <p class="article-summary">当我们仰望星空，看到无数闪烁的星星，是否曾想过，整个宇宙可能也是一个巨大的意识体？量子纠缠现象表明，两个相互纠缠的粒子无论相距多远，都能瞬间影响对方的状态。</p>
+                    <div class="article-footer">
+                        <span class="article-read-more">阅读全文 →</span>
                     </div>
                 </article>
 
                 <!-- 文章项3 -->
-                <article class="blog-article-item" data-article-id="universe-consciousness">
-                    <div class="article-card">
-                        <div class="article-date-badge">
-                            <span class="date-day">15</span>
-                            <span class="date-month">Oct</span>
-                        </div>
-                        <h2 class="article-title">宇宙的意识</h2>
-                        <div class="article-meta">
-                            <span class="article-category">哲学</span>
-                            <span class="comment-count">
-                                <span class="comment-icon">💬</span>
-                                <span class="comment-number" data-count="0">0</span>
-                            </span>
-                        </div>
-                        <div class="article-excerpt">
-                            当我们仰望星空，看到无数闪烁的星星，是否曾想过，整个宇宙可能也是一个巨大的意识体？
-                        </div>
-                        <button class="read-more-btn">
-                            <span data-lang="zh">阅读全文</span>
-                            <span data-lang="en">Read More</span>
-                        </button>
+                <article class="blog-article-item" data-article-id="青春诗" data-file="aricle/青春诗.md" data-type="md">
+                    <div class="article-header-info">
+                        <span class="article-date">2023-09-01</span>
+                        <span class="article-category">诗歌</span>
+                    </div>
+                    <h2 class="article-title">青春诗</h2>
+                    <p class="article-summary">青春是一首未完成的诗，字里行间流淌着热血与梦想。我们用稚嫩的笔触，书写着属于自己的篇章。时间是最好的雕刻师，在我们的生命里刻下痕迹。</p>
+                    <div class="article-footer">
+                        <span class="article-read-more">阅读全文 →</span>
                     </div>
                 </article>
 
                 <!-- 文章项4 -->
-                <article class="blog-article-item" data-article-id="youth-poem">
-                    <div class="article-card">
-                        <div class="article-date-badge">
-                            <span class="date-day">01</span>
-                            <span class="date-month">Sep</span>
-                        </div>
-                        <h2 class="article-title">青春诗 2.0</h2>
-                        <div class="article-meta">
-                            <span class="article-category">诗歌</span>
-                            <span class="comment-count">
-                                <span class="comment-icon">💬</span>
-                                <span class="comment-number" data-count="0">0</span>
-                            </span>
-                        </div>
-                        <div class="article-excerpt">
-                            关于青春的诗意表达，记录成长的点滴与感悟...
-                        </div>
-                        <button class="read-more-btn">
-                            <span data-lang="zh">阅读全文</span>
-                            <span data-lang="en">Read More</span>
-                        </button>
+                <article class="blog-article-item" data-article-id="少年传" data-file="aricle/少年传.md" data-type="md">
+                    <div class="article-header-info">
+                        <span class="article-date">2023-08-20</span>
+                        <span class="article-category">小说</span>
+                    </div>
+                    <h2 class="article-title">少年传</h2>
+                    <p class="article-summary">一个少年的成长故事，记录了他从童年到青年的蜕变历程，以及在这个过程中经历的挑战、困惑与成长。</p>
+                    <div class="article-footer">
+                        <span class="article-read-more">阅读全文 →</span>
                     </div>
                 </article>
 
                 <!-- 文章项5 - PDF文件 -->
-                <article class="blog-article-item" data-article-id="youth-poem-pdf">
-                    <div class="article-card">
-                        <div class="article-date-badge">
-                            <span class="date-day">10</span>
-                            <span class="date-month">Aug</span>
-                        </div>
-                        <h2 class="article-title">《青春诗》导演阐释及影像风格参考</h2>
-                        <div class="article-meta">
-                            <span class="article-category">艺术</span>
-                            <span class="file-type">PDF</span>
-                        </div>
-                        <div class="article-excerpt">
-                            电影《青春诗》的导演阐释与影像风格详细分析，包含创作理念与视觉设计参考...
-                        </div>
-                        <a href="aricle/《青春诗》导演阐释及影像风格参考.pdf" class="article-download" download="《青春诗》导演阐释及影像风格参考.pdf">
-                            <span data-lang="zh">下载PDF</span>
-                            <span data-lang="en">Download PDF</span>
-                        </a>
+                <article class="blog-article-item" data-article-id="青春诗-pdf" data-file="aricle/《青春诗》导演阐释及影像风格参考.pdf" data-type="pdf">
+                    <div class="article-header-info">
+                        <span class="article-date">2023-08-10</span>
+                        <span class="article-category">艺术</span>
+                        <span class="file-type">PDF</span>
+                    </div>
+                    <h2 class="article-title">《青春诗》导演阐释及影像风格参考</h2>
+                    <p class="article-summary">电影《青春诗》的导演阐释与影像风格详细分析，包含创作理念与视觉设计参考。点击查看PDF预览。</p>
+                    <div class="article-footer">
+                        <span class="article-read-more">查看PDF →</span>
                     </div>
                 </article>
             </div>
@@ -174,219 +123,10 @@
     </main>
 
     <footer class="footer">
-        <p class="footer-text" data-lang="zh">© 2024 刘骁奔. 保留所有权利。</p>
-        <p class="footer-text" data-lang="en">© 2024 Liuxiaoben. All rights reserved.</p>
+        <p class="footer-text" data-lang="zh">© 2025 刘骁奔. 保留所有权利。</p>
+        <p class="footer-text" data-lang="en">© 2025 Shorpen. All rights reserved.</p>
     </footer>
 
     <script src="script.js"></script>
-    <script>
-        // 文章数据
-        const articles = {
-            1: {
-                title: "12.14雪夜",
-                date: "2024年12月14日",
-                category: "思考",
-                content: `
-                    <p>雪，纷纷扬扬地落着。</p>
-                    <p>窗外的世界一片银白，仿佛时间都慢了下来。我站在窗前，看着雪花一片片飘落，落在房檐上，落在树枝上，落在地面上，转眼间就覆盖了整个世界。</p>
-                    <p>这样的夜晚总是让人思绪万千。雪，似乎有一种魔力，能够洗净喧嚣，让一切都回归宁静。在这样的夜晚，我总是会想起很多过去的事情，那些欢乐的、悲伤的、遗憾的、美好的回忆，就像电影画面一样在脑海中闪过。</p>
-                    <p>生命就像这场雪，美丽却短暂。每一片雪花都是独一无二的，但最终都会融化，回归大地。我们的生命也是如此，每个人都是独一无二的，但最终都会走向终点。然而，正是因为这种短暂，才让生命显得更加珍贵。</p>
-                    <p>在这个雪夜里，我突然明白了，生命的意义或许就在于体验每一个当下，珍惜每一次相遇，感恩每一份拥有。无论快乐还是痛苦，都是生命赐予我们的礼物，都值得我们用心去感受。</p>
-                    <p>雪还在下着，我的思绪也在继续飘远。但有一点我很确定：明天，当太阳升起，雪会融化，但那些美好的回忆，那些深刻的感悟，将会永远留在我的心中，成为我生命中最珍贵的财富。</p>
-                `,
-                downloadLink: "aricle/12.14雪夜.docx"
-            },
-            2: {
-                title: "mindcopy标准介绍及其示例",
-                date: "2024年10月15日",
-                category: "技术",
-                content: `
-                    <h2>1. 引言</h2>
-                    <p>随着人工智能技术的飞速发展，人类对于意识复制的探索也日益深入。本文将详细介绍mindcopy标准的基本概念、技术原理、应用场景以及实现示例。</p>
-                    
-                    <h2>2. mindcopy标准概述</h2>
-                    <p>mindcopy是一套用于意识信息数字化存储与传输的开放标准，旨在实现人类意识在数字世界中的延展与再生。该标准包括以下核心组件：</p>
-                    
-                    <ul>
-                        <li>意识数据结构（Consciousness Data Structure, CDS）</li>
-                        <li>神经连接映射协议（Neural Connection Mapping Protocol, NCMP）</li>
-                        <li>记忆编码规范（Memory Encoding Specification, MES）</li>
-                        <li>情感模拟框架（Emotional Simulation Framework, ESF）</li>
-                    </ul>
-                    
-                    <h2>3. 技术原理</h2>
-                    <p>mindcopy技术基于神经科学、量子计算和人工智能的最新研究成果，通过以下步骤实现意识的数字化：</p>
-                    
-                    <ol>
-                        <li><strong>神经活动记录</strong>：使用高精度脑机接口记录大脑神经元活动</li>
-                        <li><strong>数据预处理</strong>：去除噪声，提取有效信号</li>
-                        <li><strong>模式识别</strong>：识别思维模式、记忆片段和情感状态</li>
-                        <li><strong>数字化编码</strong>：将生物信号转换为数字信息</li>
-                        <li><strong>量子存储</strong>：利用量子计算技术进行高效存储</li>
-                    </ol>
-                    
-                    <h2>4. 应用示例</h2>
-                    <p>以下是mindcopy标准的几个典型应用场景：</p>
-                    
-                    <h3>4.1 数字孪生</h3>
-                    <p>创建个人意识的数字孪生体，用于远程交互、知识传承和自我探索。</p>
-                    
-                    <h3>4.2 认知增强</h3>
-                    <p>通过接入mindcopy系统，增强人类的记忆能力、学习能力和思维速度。</p>
-                    
-                    <h3>4.3 意识存档</h3>
-                    <p>将人类意识进行数字化存档，实现某种意义上的"数字永生"。</p>
-                `,
-                downloadLink: "aricle/mindcopy.txt"
-            },
-            3: {
-                title: "宇宙的意识",
-                date: "2024年9月20日",
-                category: "哲学",
-                content: `
-                    <p>当我们仰望星空，看到无数闪烁的星星，是否曾想过，整个宇宙可能也是一个巨大的意识体？</p>
-                    
-                    <h2>宇宙意识的可能性</h2>
-                    <p>现代物理学告诉我们，宇宙中的一切都由基本粒子组成，而这些粒子之间存在着复杂的相互作用。从微观的量子世界到宏观的星系尺度，都遵循着某种秩序和规律。这种秩序和规律，是否暗示着宇宙本身可能具有某种形式的意识？</p>
-                    
-                    <p>量子纠缠现象表明，两个相互纠缠的粒子无论相距多远，都能瞬间影响对方的状态。这种超越时空的联系，让人联想到意识的某些特性。或许，整个宇宙就是一个巨大的量子网络，而意识正是这个网络的涌现属性。</p>
-                    
-                    <h2>意识的层级结构</h2>
-                    <p>如果我们接受宇宙可能具有意识的观点，那么意识可能存在着层级结构：</p>
-                    
-                    <ul>
-                        <li><strong>微观意识</strong>：基本粒子层面的原始意识</li>
-                        <li><strong>生物意识</strong>：生物体层面的意识，如人类意识</li>
-                        <li><strong>群体意识</strong>：社会、文明层面的集体意识</li>
-                        <li><strong>宇宙意识</strong>：整个宇宙层面的宏观意识</li>
-                    </ul>
-                    
-                    <p>在这种层级结构中，每一层意识都是下一层意识的涌现结果，同时又受到上一层意识的影响。人类意识可能只是宇宙意识海洋中的一滴水，既独立又与整体相连。</p>
-                    
-                    <h2>意识与物质的关系</h2>
-                    <p>传统科学认为物质是第一性的，意识是物质的产物。但量子力学的发展让我们重新思考这一问题。或许，意识与物质是宇宙的两个方面，它们相互依存、相互转化，共同构成了我们所感知的世界。</p>
-                    
-                    <p>如果宇宙确实具有意识，那么我们每个人都是宇宙意识的表达，我们的思考、感受和创造，都是宇宙通过我们在认识自己。在这个意义上，我们与宇宙是一体的，我们的意识是宇宙意识的一部分。</p>
-                `,
-                downloadLink: "aricle/宇宙的意识.txt"
-            },
-            4: {
-                title: "青春诗 2.0",
-                date: "2024年8月5日",
-                category: "诗歌",
-                content: `
-                    <h2>青春的诗行</h2>
-                    <p>青春是一首未完成的诗，</p>
-                    <p>字里行间流淌着热血与梦想。</p>
-                    <p>我们用稚嫩的笔触，</p>
-                    <p>书写着属于自己的篇章。</p>
-                    
-                    <h2>成长的痕迹</h2>
-                    <p>时间是最好的雕刻师，</p>
-                    <p>在我们的生命里刻下痕迹。</p>
-                    <p>每一道皱纹都是故事，</p>
-                    <p>每一次跌倒都是成长。</p>
-                    
-                    <h2>未来的期待</h2>
-                    <p>站在青春的路口，</p>
-                    <p>我们望向远方。</p>
-                    <p>那里有未知的风景，</p>
-                    <p>等待我们去探索、去发现。</p>
-                    
-                    <h2>永恒的记忆</h2>
-                    <p>青春终将逝去，</p>
-                    <p>但记忆会永远珍藏。</p>
-                    <p>那些美好的时光，</p>
-                    <p>将成为生命中最亮的星光。</p>
-                `,
-                downloadLink: "aricle/青春诗.txt"
-            }
-        };
-
-        // 显示文章详情
-        function showArticle(articleId) {
-            const article = articles[articleId];
-            if (!article) return;
-
-            const container = document.getElementById('article-content-container');
-            
-            // 构建文章HTML
-            const articleHtml = `
-                <article class="full-article">
-                    <div class="article-header">
-                        <h1 class="full-article-title">${article.title}</h1>
-                        <div class="full-article-meta">
-                            <span class="article-date">${article.date}</span>
-                            <span class="article-category">${article.category}</span>
-                        </div>
-                    </div>
-                    <div class="article-content">
-                        ${article.content}
-                    </div>
-                    <div class="article-footer">
-                        <a href="${article.downloadLink}" download class="download-original">
-                            <span class="download-icon">📥</span>
-                            <span data-lang="zh">下载原文</span>
-                            <span data-lang="en">Download Original</span>
-                        </a>
-                    </div>
-                    
-                    <!-- 留言区域 -->
-                    <div class="comments-section">
-                        <h3 class="comments-title" data-lang="zh">留言</h3>
-                        <h3 class="comments-title" data-lang="en">Comments</h3>
-                        
-                        <!-- 留言表单 -->
-                        <form class="comment-form" data-article-id="${articleId}">
-                            <div class="form-group">
-                                <label for="comment-name-${articleId}" data-lang="zh">您的昵称：</label>
-                                <label for="comment-name-${articleId}" data-lang="en">Your Name：</label>
-                                <input type="text" id="comment-name-${articleId}" name="comment-name" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="comment-content-${articleId}" data-lang="zh">留言内容：</label>
-                                <label for="comment-content-${articleId}" data-lang="en">Comment Content：</label>
-                                <textarea id="comment-content-${articleId}" name="comment-content" rows="4" required></textarea>
-                            </div>
-                            
-                            <button type="submit" class="submit-comment">
-                                <span data-lang="zh">提交留言</span>
-                                <span data-lang="en">Submit Comment</span>
-                            </button>
-                        </form>
-                        
-                        <!-- 留言列表 -->
-                        <div class="comments-list" data-article-id="${articleId}">
-                            <p class="no-comments" data-lang="zh">暂无留言，来发表第一条留言吧！</p>
-                            <p class="no-comments" data-lang="en">No comments yet, be the first to comment!</p>
-                        </div>
-                    </div>
-                </article>
-            `;
-
-            container.innerHTML = articleHtml;
-            
-            // 显示详情视图，隐藏列表视图
-            document.getElementById('articles-list-view').style.display = 'none';
-            document.getElementById('article-detail-view').style.display = 'block';
-            
-            // 滚动到顶部
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            // 初始化留言系统
-            setupBlogCommentSystem();
-        }
-
-        // 返回文章列表
-        document.getElementById('back-to-list').addEventListener('click', function() {
-            document.getElementById('article-detail-view').style.display = 'none';
-            document.getElementById('articles-list-view').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // 初始化页面时隐藏详情视图
-        document.getElementById('article-detail-view').style.display = 'none';
-    </script>
 </body>
 </html>

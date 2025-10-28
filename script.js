@@ -528,168 +528,317 @@ function initCarousel() {
 
 // 博客文章数据
 const blogArticles = [
-    { id: '12.14雪夜', title: '12.14雪夜', file: 'aricle/青春诗.txt', date: '2023-12-14', type: 'txt' },
-    { id: 'mindcopy', title: 'mindcopy标准介绍及其示例', file: 'aricle/mindcopy.txt', date: '2023-11-20', type: 'txt' },
-    { id: 'universe-consciousness', title: '宇宙的意识', file: 'aricle/宇宙的意识.txt', date: '2023-10-15', type: 'txt' },
-    { id: 'youth-poem', title: '青春诗 2.0', file: 'aricle/少年传.txt', date: '2023-09-01', type: 'txt' },
+    { id: '12.14雪夜', title: '12.14雪夜', file: 'aricle/青春诗.md', date: '2023-12-14', type: 'md' },
+    { id: 'mindcopy', title: 'mindcopy标准介绍及其示例', file: 'aricle/mindcopy.md', date: '2023-11-20', type: 'md' },
+    { id: 'universe-consciousness', title: '宇宙的意识', file: 'aricle/宇宙的意识.md', date: '2023-10-15', type: 'md' },
+    { id: 'youth-poem', title: '青春诗 2.0', file: 'aricle/少年传.md', date: '2023-09-01', type: 'md' },
     { id: 'youth-poem-pdf', title: '《青春诗》导演阐释及影像风格参考', file: 'aricle/《青春诗》导演阐释及影像风格参考.pdf', date: '2023-08-10', type: 'pdf' }
 ];
 
-// 博客页面文章查看功能
+// 设置博客文章查看器
 function setupBlogArticleViewer() {
-    const articleList = document.querySelector('.blog-article-list');
-    const articleDetail = document.querySelector('.blog-article-detail');
-    const backToListBtn = document.querySelector('.back-to-list');
-    const articleTitle = document.querySelector('.blog-article-detail h2');
-    const articleDate = document.querySelector('.article-meta .date');
-    const articleContent = document.querySelector('.article-content');
-    const downloadBtn = document.querySelector('.download-article');
-    const commentSection = document.querySelector('.blog-article-detail .comment-section');
-    const commentForm = document.querySelector('.comment-form');
-    const commentsList = document.querySelector('.comments-list');
-    const currentArticleId = new URLSearchParams(window.location.search).get('id');
-    let currentViewingArticle = null;
+    // 处理URL参数，检查是否要直接显示某篇文章
+    const urlParams = new URLSearchParams(window.location.search);
+    const articleId = urlParams.get('article');
+    const articleFile = urlParams.get('file');
+    const articleType = urlParams.get('type');
     
-    if (!articleList || !articleDetail) return;
-    
-    // 如果URL中有文章ID参数，直接显示对应文章
-    if (currentArticleId) {
-        const article = blogArticles.find(a => a.id === currentArticleId);
-        if (article) {
-            showArticleDetail(article);
-        }
+    if (articleId && articleFile) {
+        showArticle(articleId, articleFile, articleType);
     }
-    
-    // 点击文章列表项
+
+    // 文章列表项点击事件
     document.querySelectorAll('.blog-article-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const articleId = item.dataset.articleId;
-            const article = blogArticles.find(a => a.id === articleId);
-            if (article) {
-                showArticleDetail(article);
-                // 更新URL参数
-                history.pushState(null, null, `?id=${articleId}`);
-            }
+        item.addEventListener('click', function(e) {
+            const id = this.getAttribute('data-article-id');
+            const file = this.getAttribute('data-file');
+            const type = this.getAttribute('data-type') || 'md';
+            
+            showArticle(id, file, type);
         });
     });
-    
-    // 返回文章列表
-    if (backToListBtn) {
-        backToListBtn.addEventListener('click', () => {
-            articleList.style.display = 'grid';
-            articleDetail.style.display = 'none';
-            // 移除URL参数
-            history.pushState(null, null, window.location.pathname);
-            updateLanguage();
-        });
-    }
-    
+
+    // 返回列表按钮事件
+    document.getElementById('back-to-list')?.addEventListener('click', function() {
+        document.getElementById('article-detail-view').style.display = 'none';
+        document.getElementById('articles-list-view').style.display = 'block';
+        // 更新URL，移除article参数
+        const url = new URL(window.location);
+        url.searchParams.delete('article');
+        url.searchParams.delete('file');
+        url.searchParams.delete('type');
+        window.history.pushState({}, '', url);
+        // 滚动到顶部
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
     // 显示文章详情
-    function showArticleDetail(article) {
-        currentViewingArticle = article;
-        
-        // 更新标题和元信息
-        if (articleTitle) articleTitle.textContent = article.title;
-        if (articleDate) articleDate.textContent = article.date;
-        
-        // 设置下载链接
-        if (downloadBtn) {
-            downloadBtn.href = article.file;
-            downloadBtn.textContent = article.type === 'pdf' ? '下载PDF' : '下载原文';
-        }
-        
-        // 加载文章内容（仅TXT文件）
-        if (articleContent) {
-            if (article.type === 'txt') {
-                fetch(article.file)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
-                        return response.text();
-                    })
-                    .then(text => {
-                        // 格式化文本为HTML，保留换行和基本格式
-                        const formattedContent = text
-                            .replace(/\n\n/g, '</p><p>')
-                            .replace(/\n/g, '<br>')
-                            .replace(/^/g, '<p>')
-                            .replace(/$/g, '</p>');
-                        articleContent.innerHTML = formattedContent;
-                    })
-                    .catch(error => {
-                        articleContent.innerHTML = `<p>加载文章内容失败: ${error.message}</p>`;
-                    });
+        function showArticle(articleId, articleFile, articleType) {
+            console.log('显示文章详情:', { articleId, articleFile, articleType });
+            
+            // 更新URL
+            const url = new URL(window.location);
+            url.searchParams.set('article', articleId);
+            url.searchParams.set('file', articleFile);
+            url.searchParams.set('type', articleType);
+            window.history.pushState({}, '', url);
+
+            const container = document.getElementById('article-content-container');
+            
+            // 显示加载中状态
+            container.innerHTML = '<div class="loading">加载中...</div>';
+            
+            // 显示详情视图，隐藏列表视图
+            document.getElementById('articles-list-view').style.display = 'none';
+            document.getElementById('article-detail-view').style.display = 'block';
+            
+            // 根据文件类型加载内容
+            const fileType = articleType || (articleFile ? articleFile.toLowerCase().split('.').pop() : '');
+            console.log('文件类型:', fileType);
+            
+            if (fileType === 'pdf') {
+                // PDF文件，显示预览
+                showPdfPreview(articleId, articleFile);
             } else {
-                articleContent.innerHTML = `<p>这是一个PDF文件，请点击上方下载按钮查看完整内容。</p>`;
+                // 所有非PDF文件都尝试作为文本文件渲染
+                console.log('尝试渲染文件:', articleFile);
+                loadAndRenderMarkdown(articleId, articleFile);
             }
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+    // 显示PDF预览
+    function showPdfPreview(articleId, articleFile) {
+        const container = document.getElementById('article-content-container');
+        const articleTitle = document.querySelector(`.blog-article-item[data-article-id="${articleId}"] .article-title`)?.textContent || '文章标题';
+        
+        console.log('尝试加载PDF:', articleFile);
+        // 直接使用相对路径，不做任何修改
+        container.innerHTML = `
+            <div class="pdf-viewer">
+                <h1 class="full-article-title">${articleTitle}</h1>
+                <div class="pdf-container">
+                    <iframe src="${articleFile}" type="application/pdf" width="100%" height="800px"></iframe>
+                </div>
+                <div class="pdf-actions">
+                    <a href="${articleFile}" target="_blank" class="open-pdf-btn">
+                        <span class="pdf-icon">📄</span>
+                        <span data-lang="zh">在新标签页打开</span>
+                        <span data-lang="en">Open in New Tab</span>
+                    </a>
+                    <a href="${articleFile}" download class="download-pdf-btn">
+                        <span class="download-icon">📥</span>
+                        <span data-lang="zh">下载PDF文件</span>
+                        <span data-lang="en">Download PDF</span>
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+
+    // 初始化marked配置（支持代码高亮）
+    function initMarked() {
+        console.log('初始化marked配置...');
+        
+        // 检查marked库是否加载
+        if (typeof marked === 'undefined') {
+            console.error('❌ marked库未加载，使用备用方案');
+            return false;
         }
         
-        // 加载评论
-        if (commentSection && commentsList) {
-            loadArticleComments(article.id);
-        }
-        
-        // 切换视图
-        articleList.style.display = 'none';
-        articleDetail.style.display = 'block';
-        updateLanguage();
-    }
-    
-    // 提交评论
-    if (commentForm) {
-        commentForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            if (!currentViewingArticle) return;
-            
-            const nameInput = document.getElementById('comment-name');
-            const contentInput = document.getElementById('comment-content');
-            
-            const name = nameInput.value.trim();
-            const content = contentInput.value.trim();
-            
-            if (name && content) {
-                addComment(currentViewingArticle.id, name, content);
-                loadArticleComments(currentViewingArticle.id);
-                
-                // 清空表单
-                nameInput.value = '';
-                contentInput.value = '';
-            }
-        });
-    }
-    
-    // 加载文章评论
-    function loadArticleComments(articleId) {
-        if (!commentsList) return;
-        
-        const comments = getComments(articleId);
-        
-        // 清空评论列表
-        commentsList.innerHTML = '';
-        
-        if (comments.length === 0) {
-            // 显示无评论提示
-            const noCommentsZh = document.createElement('p');
-            noCommentsZh.className = 'no-comments';
-            noCommentsZh.dataset.lang = 'zh';
-            noCommentsZh.textContent = '暂无留言，来发表第一条留言吧！';
-            
-            const noCommentsEn = document.createElement('p');
-            noCommentsEn.className = 'no-comments';
-            noCommentsEn.dataset.lang = 'en';
-            noCommentsEn.textContent = 'No comments yet, be the first to comment!';
-            
-            commentsList.appendChild(noCommentsZh);
-            commentsList.appendChild(noCommentsEn);
-        } else {
-            // 按时间排序（最新的在前）
-            comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
-            // 添加评论
-            comments.forEach(comment => {
-                commentsList.appendChild(createCommentElement(comment));
+        try {
+            console.log('✅ marked库可用，配置中...');
+            // 先使用基本配置，确保能正常解析
+            marked.setOptions({
+                breaks: true, // 支持换行符转换为<br>
+                gfm: true, // 支持GitHub Flavored Markdown语法
+                silent: false,
+                // 简化配置，移除可能有问题的部分
+                highlight: function(code) {
+                    // 暂时移除highlight.js依赖，先确保基本功能
+                    return code;
+                }
             });
+            
+            console.log('✅ marked配置完成');
+            return true;
+        } catch (e) {
+            console.error('❌ marked配置失败:', e);
+            return false;
         }
+    }
+
+    // 加载并渲染Markdown文件
+    function loadAndRenderMarkdown(articleId, articleFile) {
+        console.log('🔄 开始加载Markdown文件:', articleId, articleFile);
+        const container = document.getElementById('article-content-container');
+        
+        // 获取文章标题
+        let articleTitle = '';
+        if (document.querySelector(`.blog-article-item[data-article-id="${articleId}"]`)) {
+            articleTitle = document.querySelector(`.blog-article-item[data-article-id="${articleId}"] .article-title`)?.textContent || '文章标题';
+        } else {
+            // 如果DOM中找不到，尝试从URL参数获取
+            const urlParams = new URLSearchParams(window.location.search);
+            articleTitle = urlParams.get('title') || '文章标题';
+        }
+        
+        // 显示加载状态
+        container.innerHTML = `<div class="loading">正在加载 ${articleFile} ...</div>`;
+        
+        // 远程加载Markdown文件
+        console.log('📁 尝试加载文件:', articleFile);
+        
+        // 构建正确的文件路径
+        let fileUrl;
+        
+        // 检查是否通过HTTP服务器访问
+        if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+            const basePath = window.location.origin;
+            fileUrl = articleFile.startsWith('/') ? basePath + articleFile : basePath + '/' + articleFile;
+            console.log('🌐 HTTP请求URL:', fileUrl);
+        } else {
+            // 如果是直接打开本地文件，提供友好的错误提示
+            console.warn('⚠️ 检测到直接打开本地文件，由于浏览器安全限制，无法加载本地Markdown文件。请使用HTTP服务器访问。');
+            container.innerHTML = `
+                <div class="error" style="padding: 20px; border: 1px solid #ff4d4f; border-radius: 8px; background: #fff5f5;">
+                    <h3 style="color: #ff4d4f;">安全限制</h3>
+                    <p>浏览器安全限制不允许直接从本地文件系统加载其他文件。</p>
+                    <p><strong>解决方案：</strong></p>
+                    <ul>
+                        <li>使用HTTP服务器访问此页面（如已启动的python -m http.server）</li>
+                        <li>访问地址：<a href="http://localhost:8000/blog.html" target="_blank">http://localhost:8000/blog.html</a></li>
+                        <li>或安装VSCode Live Server插件</li>
+                    </ul>
+                </div>
+            `;
+            return;
+        }
+        
+        fetch(fileUrl)
+            .then(response => {
+                console.log('📥 响应状态:', response.status, response.statusText);
+                if (!response.ok) {
+                    throw new Error(`文件加载失败: ${response.status} ${response.statusText}`);
+                }
+                return response.text();
+            })
+            .then(markdownContent => {
+                console.log('✅ 文件加载成功，内容长度:', markdownContent.length);
+                
+                try {
+                    // 显示原始内容（用于调试）
+                    console.log('📝 原始Markdown内容前100字符:', markdownContent.substring(0, 100));
+                    
+                    // 首先尝试最简单的方式显示
+                    const safeContent = markdownContent.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    
+                    // 初始化marked配置
+                    if (initMarked()) {
+                        console.log('🔧 使用marked库解析Markdown');
+                        // 使用marked库将内容转换为HTML
+                        try {
+                            const htmlContent = marked.parse(markdownContent);
+                            console.log('✅ Markdown解析成功');
+                            
+                            // 构建文章HTML
+                            const articleHtml = `
+                                <article class="full-article">
+                                    <div class="article-header">
+                                        <h1 class="full-article-title">${articleTitle}</h1>
+                                    </div>
+                                    <div class="article-content">
+                                        ${htmlContent}
+                                    </div>
+                                    <div class="article-footer">
+                                        <a href="${articleFile}" download class="download-original">
+                                            <span class="download-icon">📥</span>
+                                            <span data-lang="zh">下载原文</span>
+                                            <span data-lang="en">Download Original</span>
+                                        </a>
+                                    </div>
+                                </article>
+                            `;
+
+                            container.innerHTML = articleHtml;
+                        } catch (parseError) {
+                            console.error('❌ Markdown解析失败:', parseError);
+                            // 解析失败时回退到显示原始内容
+                            container.innerHTML = `
+                                <article class="full-article">
+                                    <div class="article-header">
+                                        <h1 class="full-article-title">${articleTitle}</h1>
+                                        <p style="color: #faad14;">⚠️ 使用原始文本显示（解析失败）</p>
+                                    </div>
+                                    <div class="article-content">
+                                        <pre style="white-space: pre-wrap;">${safeContent}</pre>
+                                    </div>
+                                    <div class="article-footer">
+                                        <a href="${articleFile}" download class="download-original">
+                                            <span class="download-icon">📥</span>
+                                            <span data-lang="zh">下载原文</span>
+                                            <span data-lang="en">Download Original</span>
+                                        </a>
+                                    </div>
+                                </article>
+                            `;
+                        }
+                    } else {
+                        // 使用备用方案：直接显示原始文本
+                        console.warn('⚠️ 使用备用显示方式 - 原始文本');
+                        container.innerHTML = `
+                            <article class="full-article">
+                                <div class="article-header">
+                                    <h1 class="full-article-title">${articleTitle}</h1>
+                                    <p style="color: #faad14;">⚠️ 使用原始文本显示（marked库不可用）</p>
+                                </div>
+                                <div class="article-content">
+                                    <pre style="white-space: pre-wrap;">${safeContent}</pre>
+                                </div>
+                                <div class="article-footer">
+                                    <a href="${articleFile}" download class="download-original">
+                                        <span class="download-icon">📥</span>
+                                        <span data-lang="zh">下载原文</span>
+                                        <span data-lang="en">Download Original</span>
+                                    </a>
+                                </div>
+                            </article>
+                        `;
+                    }
+                    
+                } catch (e) {
+                    console.error('❌ 显示过程发生错误:', e);
+                    // 最终的错误处理
+                    container.innerHTML = `
+                        <div class="error" style="padding: 20px; border: 1px solid #ff4d4f; border-radius: 8px; background: #fff5f5;">
+                            <h3 style="color: #ff4d4f;">内容处理失败</h3>
+                            <p><strong>错误信息:</strong> ${e.message}</p>
+                            <p><strong>文件路径:</strong> ${articleFile}</p>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('❌ 加载文章失败:', error, { articleId, articleFile });
+                // 更详细的错误提示
+                container.innerHTML = `
+                    <div class="error" style="padding: 20px; border: 1px solid #ff4d4f; border-radius: 8px; background: #fff5f5;">
+                        <h3 style="color: #ff4d4f;">加载文章失败</h3>
+                        <p><strong>错误信息:</strong> ${error.message}</p>
+                        <p><strong>文件路径:</strong> ${articleFile}</p>
+                        <p><strong>请求URL:</strong> ${fileUrl}</p>
+                        <p><strong>可能原因:</strong></p>
+                        <ul>
+                            <li>文件不存在或路径错误</li>
+                            <li>服务器返回404错误</li>
+                            <li>网络连接问题</li>
+                            <li>跨域安全限制</li>
+                        </ul>
+                    </div>
+                `;
+            });
     }
 }
 
