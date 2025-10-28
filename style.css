@@ -1200,13 +1200,20 @@ body.zh [data-lang="en"] {
     font-weight: 500;
 }
 
-/* Markdown内容样式 */
+/* 日本风格文章排版 */
 .markdown-content {
-    color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    font-family: 'Noto Serif JP', 'Source Han Serif', 'Noto Serif SC', serif;
     line-height: 1.8;
-    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.9);
+    background-color: transparent;
+    border-radius: 4px;
+    box-shadow: none;
+    text-align: justify;
+    letter-spacing: 0.02em;
 }
 
+/* 标题样式 - 日式简约风格 */
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3,
@@ -1214,89 +1221,150 @@ body.zh [data-lang="en"] {
 .markdown-content h5,
 .markdown-content h6 {
     margin-top: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    font-weight: 500;
+    line-height: 1.4;
     color: #00ffcc;
-    line-height: 1.3;
+    text-align: center;
 }
 
 .markdown-content h1 {
-    font-size: 1.8rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
+    font-size: 2em;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.05em;
 }
 
 .markdown-content h2 {
-    font-size: 1.6rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
+    font-size: 1.7em;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.03em;
 }
 
 .markdown-content h3 {
-    font-size: 1.3rem;
+    font-size: 1.4em;
+    letter-spacing: 0.02em;
     color: #0099ff;
 }
 
+/* 段落样式 - 日式留白与节奏 */
 .markdown-content p {
-    margin-bottom: 20px;
-    text-align: justify;
+    margin-top: 0;
+    margin-bottom: 28px;
+    text-indent: 2em;
+    line-height: 2;
 }
 
+/* 首段不缩进 */
+.markdown-content > p:first-of-type {
+    text-indent: 0;
+}
+
+/* 链接样式 */
 .markdown-content a {
     color: #00ffcc;
     text-decoration: none;
-    transition: color 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
 }
 
 .markdown-content a:hover {
     color: #0099ff;
-    text-decoration: underline;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
 }
 
+/* 列表样式 */
 .markdown-content ul,
 .markdown-content ol {
-    margin: 20px 0;
-    padding-left: 30px;
+    padding-left: 2em;
+    margin-top: 0;
+    margin-bottom: 28px;
 }
 
 .markdown-content li {
-    margin-bottom: 10px;
+    margin-top: 12px;
+    line-height: 1.8;
 }
 
+/* 引用样式 - 和纸风格 */
 .markdown-content blockquote {
-    border-left: 3px solid #00ffcc;
-    padding-left: 20px;
-    margin: 20px 0;
+    padding: 20px 25px;
     color: rgba(255, 255, 255, 0.8);
+    border-left: 4px solid #00ffcc;
+    margin: 28px 0;
+    background-color: rgba(255, 255, 255, 0.05);
     font-style: italic;
 }
 
+/* 代码样式 */
 .markdown-content code {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Courier New', monospace;
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 90%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     color: #ffcc00;
 }
 
 .markdown-content pre {
-    background: rgba(0, 0, 0, 0.4);
     padding: 20px;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin: 20px 0;
+    overflow: auto;
+    font-size: 90%;
+    line-height: 1.6;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    margin-top: 0;
+    margin-bottom: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .markdown-content pre code {
-    background: none;
     padding: 0;
-    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
 }
 
+/* 图片样式 - 日本美学风格 */
 .markdown-content img {
     max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 20px 0;
+    box-sizing: content-box;
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin: 28px auto;
+    display: block;
+}
+
+/* 强调日式风格的文章详情页 */
+.article-content {
+    padding: 40px 0;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.full-article {
+    background-color: transparent;
+    padding: 0;
+}
+
+.full-article-title {
+    font-family: 'Noto Serif JP', 'Source Han Serif', 'Noto Serif SC', serif;
+    font-size: 2.2em;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(0, 255, 204, 0.3);
+    letter-spacing: 0.05em;
+    background: linear-gradient(45deg, #00ffcc, #0099ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* PDF查看器样式 */

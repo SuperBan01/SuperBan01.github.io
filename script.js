@@ -713,31 +713,25 @@ function setupBlogArticleViewer() {
         // 远程加载Markdown文件
         console.log('📁 尝试加载文件:', articleFile);
         
-        // 构建正确的文件路径
+        // 构建文件URL
         let fileUrl;
+        // 检测是否在GitHub Pages环境
+        const isGitHubPages = window.location.hostname.includes('github.io');
         
-        // 检查是否通过HTTP服务器访问
-        if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-            // 改进的路径构建，特别处理GitHub Pages环境
-            if (window.location.hostname.includes('github.io')) {
-                // 获取仓库名（GitHub Pages的子路径）
-                const pathParts = window.location.pathname.split('/');
-                const repoName = pathParts.length > 1 ? pathParts[1] : '';
-                
-                // 构建完整URL，确保路径正确
-                if (articleFile.startsWith('/')) {
-                    // 如果已经是绝对路径，添加仓库名前缀
-                    fileUrl = `${window.location.origin}/${repoName}${articleFile}`;
-                } else {
-                    // 如果是相对路径，从根开始构建
-                    fileUrl = `${window.location.origin}/${repoName}/${articleFile}`;
-                }
-            } else {
-                // 非GitHub Pages环境，使用原始逻辑
-                const basePath = window.location.origin;
-                fileUrl = articleFile.startsWith('/') ? basePath + articleFile : basePath + '/' + articleFile;
-            }
-            console.log('🌐 HTTP请求URL:', fileUrl);
+        // 确保articleFile不以'/'开头
+        const cleanArticleFile = articleFile.startsWith('/') ? articleFile.substring(1) : articleFile;
+        
+        if (isGitHubPages) {
+            // 提取仓库名 (格式: username.github.io/repo-name)
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            const repoName = pathParts.length > 0 ? pathParts[0] : '';
+            console.log('GitHub Pages仓库名:', repoName);
+            
+            // 构建正确的文件路径，确保不包含blog.html前缀
+            fileUrl = `${window.location.origin}/${repoName}/${cleanArticleFile}`;
+        } else if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+            // 正常HTTP/HTTPS环境，从根目录开始
+            fileUrl = `${window.location.origin}/${cleanArticleFile}`;
         } else {
             // 如果是直接打开本地文件，提供友好的错误提示
             console.warn('⚠️ 检测到直接打开本地文件，由于浏览器安全限制，无法加载本地Markdown文件。请使用HTTP服务器访问。');
@@ -755,6 +749,9 @@ function setupBlogArticleViewer() {
             `;
             return;
         }
+        
+        console.log('📋 最终文件URL:', fileUrl);
+        
         
         fetch(fileUrl)
             .then(response => {
