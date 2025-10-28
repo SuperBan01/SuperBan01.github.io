@@ -714,43 +714,49 @@ function setupBlogArticleViewer() {
         console.log('📁 尝试加载文件:', articleFile);
         
         // 构建文件URL
-        let fileUrl;
-        // 检测是否在GitHub Pages环境
-        const isGitHubPages = window.location.hostname.includes('github.io');
+    let fileUrl;
+    
+    // 确保articleFile不以'/'开头
+    const cleanArticleFile = articleFile.startsWith('/') ? articleFile.substring(1) : articleFile;
+    
+    // 检测是否在GitHub Pages环境
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    
+    if (isGitHubPages) {
+        // GitHub Pages环境 - 重要: 直接从根目录构建URL，不包含任何页面路径
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        const repoName = pathParts.length > 0 ? pathParts[0] : '';
         
-        // 确保articleFile不以'/'开头
-        const cleanArticleFile = articleFile.startsWith('/') ? articleFile.substring(1) : articleFile;
-        
-        if (isGitHubPages) {
-            // 提取仓库名 (格式: username.github.io/repo-name)
-            const pathParts = window.location.pathname.split('/').filter(Boolean);
-            const repoName = pathParts.length > 0 ? pathParts[0] : '';
-            console.log('GitHub Pages仓库名:', repoName);
-            
-            // 构建正确的文件路径，确保不包含blog.html前缀
-            fileUrl = `${window.location.origin}/${repoName}/${cleanArticleFile}`;
-        } else if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-            // 正常HTTP/HTTPS环境，从根目录开始
-            fileUrl = `${window.location.origin}/${cleanArticleFile}`;
+        // 构建正确的URL，确保不包含blog.html或其他页面路径
+        if (repoName && repoName !== 'blog.html') {
+          fileUrl = `${window.location.origin}/${repoName}/${cleanArticleFile}`;
         } else {
-            // 如果是直接打开本地文件，提供友好的错误提示
-            console.warn('⚠️ 检测到直接打开本地文件，由于浏览器安全限制，无法加载本地Markdown文件。请使用HTTP服务器访问。');
-            container.innerHTML = `
-                <div class="error" style="padding: 20px; border: 1px solid #ff4d4f; border-radius: 8px; background: #fff5f5;">
-                    <h3 style="color: #ff4d4f;">安全限制</h3>
-                    <p>浏览器安全限制不允许直接从本地文件系统加载其他文件。</p>
-                    <p><strong>解决方案：</strong></p>
-                    <ul>
-                        <li>使用HTTP服务器访问此页面（如已启动的python -m http.server）</li>
-                        <li>访问地址：<a href="http://localhost:8000/blog.html" target="_blank">http://localhost:8000/blog.html</a></li>
-                        <li>或安装VSCode Live Server插件</li>
-                    </ul>
-                </div>
-            `;
-            return;
+          fileUrl = `${window.location.origin}/${cleanArticleFile}`;
         }
-        
-        console.log('📋 最终文件URL:', fileUrl);
+    } else if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+        // 本地HTTP/HTTPS环境 - 直接从网站根目录加载，不包含任何页面路径
+        fileUrl = `${window.location.origin}/${cleanArticleFile}`;
+    } else {
+        // 如果是直接打开本地文件，提供友好的错误提示
+        console.warn('⚠️ 检测到直接打开本地文件，由于浏览器安全限制，无法加载本地Markdown文件。请使用HTTP服务器访问。');
+        container.innerHTML = `
+            <div class="error" style="padding: 20px; border: 1px solid #ff4d4f; border-radius: 8px; background: #fff5f5;">
+                <h3 style="color: #ff4d4f;">安全限制</h3>
+                <p>浏览器安全限制不允许直接从本地文件系统加载其他文件。</p>
+                <p><strong>解决方案：</strong></p>
+                <ul>
+                    <li>使用HTTP服务器访问此页面（如已启动的python -m http.server）</li>
+                    <li>访问地址：<a href="http://localhost:8000/blog.html" target="_blank">http://localhost:8000/blog.html</a></li>
+                    <li>或安装VSCode Live Server插件</li>
+                </ul>
+            </div>
+        `;
+        return;
+    }
+    
+    console.log('📋 最终文件URL (已修复，不包含页面路径):', fileUrl);
+    console.log('📂 文件路径:', cleanArticleFile);
+    console.log('🌐 环境:', isGitHubPages ? 'GitHub Pages' : '本地服务器');
         
         
         fetch(fileUrl)
