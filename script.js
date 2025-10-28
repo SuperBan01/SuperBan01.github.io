@@ -152,11 +152,33 @@ function setupHoverEffects() {
 // GitHub Pages 兼容性处理
 function setupGitHubPagesCompatibility() {
     if (window.location.hostname.includes('github.io')) {
-        // 确保相对路径正确
+        console.log('🛠️  启用GitHub Pages兼容性模式');
+        
+        // 获取仓库名（GitHub Pages的子路径）
+        const pathParts = window.location.pathname.split('/');
+        const repoName = pathParts.length > 1 ? pathParts[1] : '';
+        console.log('📂 仓库名:', repoName);
+        
+        // 处理所有以/开头的链接
         const links = document.querySelectorAll('a[href^="/"]');
         links.forEach(link => {
-            const repoName = window.location.pathname.split('/')[1];
-            link.href = `/${repoName}${link.getAttribute('href')}`;
+            const originalHref = link.getAttribute('href');
+            // 避免重复添加仓库名前缀
+            if (!originalHref.includes(`/${repoName}/`)) {
+                link.href = `/${repoName}${originalHref}`;
+                console.log('🔗 修正链接:', originalHref, '→', link.href);
+            }
+        });
+        
+        // 特别处理博客文章链接和数据属性
+        const blogItems = document.querySelectorAll('.blog-article-item');
+        blogItems.forEach(item => {
+            // 确保data-file属性的路径在GitHub Pages上可用
+            const fileAttribute = item.getAttribute('data-file');
+            if (fileAttribute && !fileAttribute.startsWith('http')) {
+                // data-file属性保持相对路径不变，由loadAndRenderMarkdown函数处理
+                console.log('📝 文章文件属性:', fileAttribute);
+            }
         });
     }
 }
@@ -696,8 +718,25 @@ function setupBlogArticleViewer() {
         
         // 检查是否通过HTTP服务器访问
         if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-            const basePath = window.location.origin;
-            fileUrl = articleFile.startsWith('/') ? basePath + articleFile : basePath + '/' + articleFile;
+            // 改进的路径构建，特别处理GitHub Pages环境
+            if (window.location.hostname.includes('github.io')) {
+                // 获取仓库名（GitHub Pages的子路径）
+                const pathParts = window.location.pathname.split('/');
+                const repoName = pathParts.length > 1 ? pathParts[1] : '';
+                
+                // 构建完整URL，确保路径正确
+                if (articleFile.startsWith('/')) {
+                    // 如果已经是绝对路径，添加仓库名前缀
+                    fileUrl = `${window.location.origin}/${repoName}${articleFile}`;
+                } else {
+                    // 如果是相对路径，从根开始构建
+                    fileUrl = `${window.location.origin}/${repoName}/${articleFile}`;
+                }
+            } else {
+                // 非GitHub Pages环境，使用原始逻辑
+                const basePath = window.location.origin;
+                fileUrl = articleFile.startsWith('/') ? basePath + articleFile : basePath + '/' + articleFile;
+            }
             console.log('🌐 HTTP请求URL:', fileUrl);
         } else {
             // 如果是直接打开本地文件，提供友好的错误提示
